@@ -1,13 +1,43 @@
+import Navigation from "@/components/Navigation";
 import WorldMap from "@/components/WorldMap";
-import { kv } from "@vercel/kv";
+import clientPromise from "@/lib/mongodb";
 
-export default async function Home() {
-  // Fetch all keys matching the "geo:*" pattern
-  const [newCursor, keys] = await kv.scan(0, { match: "*" });
+export default async function Home({ searchParams }) {
+  const requestInfo = {
+    country: searchParams.country,
+    city: searchParams.city,
+    region: searchParams.region,
+    latitude: searchParams.latitude,
+    longitude: searchParams.longitude,
+    createdAt: new Date(),
+    requestID: crypto.randomUUID(),
+  };
 
-  // Fetch data for all keys
-  const geoDataPromises = keys.map((key) => kv.get(key));
-  const geoData = await Promise.all(geoDataPromises);
+  const client = await clientPromise;
+  const db = client.db("production");
+  const userLocation = await db
+    .collection("locations")
+    .insertOne({ ...requestInfo });
 
-  return <WorldMap geoData={geoData} />;
+  const geoData = await db
+    .collection("locations")
+    .aggregate([
+      {
+        $group: {
+          _id: "$country",
+          count: { $sum: 1 },
+        },
+      },
+    ])
+    .toArray();
+
+  const min = Math.min(...geoData.map((d) => d.count));
+  const max = Math.max(...geoData.map((d) => d.count));
+
+  return (
+    <>
+      <WorldMap geoData={geoData} min={min} max={max} />
+      <Navigation requestInfo={requestInfo} />
+    </>
+  );
 }
