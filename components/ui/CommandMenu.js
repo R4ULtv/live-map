@@ -1,14 +1,19 @@
 "use client";
 
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import { MagnifyingGlassIcon, UserIcon } from "@heroicons/react/20/solid";
+import {
+  MagnifyingGlassIcon,
+  UserIcon,
+  AdjustmentsHorizontalIcon,
+} from "@heroicons/react/20/solid";
 
 import { Command } from "cmdk";
 import { useEffect, useCallback, useState } from "react";
 import { getCountryData } from "countries-list";
 
-import jsonMap from "@/public/countries.json";
-import { useCommandMenu } from "@/components/CommandMenuContext";
+import jsonMap from "@/public/countries-low.json";
+import { useCommandMenu } from "@/components/providers/CommandMenuContext";
+import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
 
 export default function CommandMenu({ requestInfo }) {
   const country = getCountryData(requestInfo.country);
@@ -20,6 +25,7 @@ export default function CommandMenu({ requestInfo }) {
     isRequestInfoOpen,
     setIsRequestInfoOpen,
   } = useCommandMenu();
+  const { isHighQuality, toggleQuality } = useGraphicsQuality();
 
   const countries = jsonMap.objects.countries1.geometries.map((country) => ({
     name: country.properties.name,
@@ -55,6 +61,10 @@ export default function CommandMenu({ requestInfo }) {
         setIsRequestInfoOpen(!isRequestInfoOpen);
         setIsOpen(false);
         setIsCountrySearchOpen(false);
+      } else if (e.ctrlKey && e.key === "q") {
+        e.preventDefault();
+        toggleQuality();
+        setIsOpen(false);
       }
     },
     [
@@ -93,6 +103,16 @@ export default function CommandMenu({ requestInfo }) {
         setIsCountrySearchOpen(true);
         setIsOpen(false);
         setIsRequestInfoOpen(false);
+      },
+    },
+    {
+      name: `Switch to ${isHighQuality ? "Low" : "High"} Graphics`,
+      desc: isHighQuality ? "Switch to lower quality for better performance" : "The performance may be significantly lower",
+      icon: <AdjustmentsHorizontalIcon className="size-5" />,
+      shortct: ["⌘", "Q"],
+      onClick: () => {
+        toggleQuality();
+        setIsOpen(false);
       },
     },
   ];
@@ -241,11 +261,11 @@ export default function CommandMenu({ requestInfo }) {
 
                       <div>
                         <div className="flex items-center justify-between">
-                          <span className="font-semibold">ISO 2</span>
+                          <span className="font-semibold">ISO Alpha-2</span>
                           <span>{country.iso2}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="font-semibold">ISO 3</span>
+                          <span className="font-semibold">ISO Alpha-3</span>
                           <span>{country.iso3}</span>
                         </div>
                       </div>
@@ -267,16 +287,19 @@ export default function CommandMenu({ requestInfo }) {
                         <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
                           {command.icon}
                         </div>
-                        {command.name}
+                        <div className="flex flex-col">
+                          {command.name}
+                          <p className="text-xs text-zinc-500">{command?.desc}</p>
+                        </div>
                       </div>
                       <div className="flex justify-center items-center gap-1.5 text-xs">
                         {command.shortct.map((shortcut) => (
-                          <span
+                          <kbd
                             key={shortcut}
                             className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
                           >
                             {shortcut}
-                          </span>
+                          </kbd>
                         ))}
                       </div>
                     </Command.Item>

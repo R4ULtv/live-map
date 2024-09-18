@@ -6,9 +6,9 @@ import {
   UserIcon,
 } from "@heroicons/react/20/solid";
 import { Button } from "@headlessui/react";
-import { useCommandMenu } from "@/components/CommandMenuContext";
+import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 
-export default function Navigation({ requestInfo }) {
+export default function Navigation() {
   const { setIsOpen, setIsCountrySearchOpen, setIsRequestInfoOpen } = useCommandMenu();
 
   return (
