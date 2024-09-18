@@ -10289,7 +10289,7 @@
         {
           "arcs": [[-17, 427, 428, 429]],
           "type": "Polygon",
-          "properties": { "name": "Kosovo", "Alpha2": null },
+          "properties": { "name": "Kosovo", "Alpha2": "XK" },
           "id": "CS-KM"
         },
         {
@@ -10628,7 +10628,7 @@
         {
           "arcs": [[570, -289, -418, 571, -225, -145, 572, -566]],
           "type": "Polygon",
-          "properties": { "name": "South Sudan", "Alpha2": null },
+          "properties": { "name": "South Sudan", "Alpha2": "SS" },
           "id": "SSD"
         },
         {
