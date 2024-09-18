@@ -10,7 +10,6 @@ import {
 } from "react-simple-maps";
 import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
 
-// New FPS counter component
 const FPSCounter = () => {
   const [fps, setFps] = useState(0);
 
@@ -34,7 +33,7 @@ const FPSCounter = () => {
   }, []);
 
   const getFPSColor = (fps) => {
-    if (fps >= 50) return "text-green-400";
+    if (fps >= 60) return "text-green-400";
     if (fps >= 30) return "text-yellow-400";
     return "text-red-400";
   };
@@ -48,10 +47,10 @@ const FPSCounter = () => {
 
 export default function WorldMap({ geoData, min, max }) {
   const { isHighQuality } = useGraphicsQuality();
-  const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1.25 });
+  const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1.2 });
 
   const handleReset = useCallback(() => {
-    setPosition({ coordinates: [0, 0], zoom: 1.25 });
+    setPosition({ coordinates: [0, 0], zoom: 1.2 });
   }, []);
 
   useEffect(() => {
@@ -94,17 +93,19 @@ export default function WorldMap({ geoData, min, max }) {
   }, [getColor]);
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-screen h-screen">
       <ComposableMap
         projection="geoEquirectangular"
         projectionConfig={{
-          scale: 147,
+          scale: 150,
         }}
-        style={{ width: "100%", height: "100%" }}
+        className="w-full h-full outline-none"
       >
         <ZoomableGroup
           zoom={position.zoom}
           center={position.coordinates}
+          minZoom={1}
+          maxZoom={5}
           onMoveEnd={(position) => setPosition(position)}
         >
           <Geographies
