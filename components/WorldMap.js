@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { scaleLinear } from "d3-scale";
 import {
   ComposableMap,
@@ -8,8 +8,66 @@ import {
   Geography,
   ZoomableGroup,
 } from "react-simple-maps";
+import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
+
+// New FPS counter component
+const FPSCounter = () => {
+  const [fps, setFps] = useState(0);
+
+  useEffect(() => {
+    let frameCount = 0;
+    let lastTime = performance.now();
+
+    const updateFPS = () => {
+      const now = performance.now();
+      frameCount++;
+      if (now - lastTime > 1000) {
+        setFps(Math.round((frameCount * 1000) / (now - lastTime)));
+        frameCount = 0;
+        lastTime = now;
+      }
+      requestAnimationFrame(updateFPS);
+    };
+
+    const animationId = requestAnimationFrame(updateFPS);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  const getFPSColor = (fps) => {
+    if (fps >= 50) return "text-green-400";
+    if (fps >= 30) return "text-yellow-400";
+    return "text-red-400";
+  };
+
+  return (
+    <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white p-2 rounded">
+      FPS: <span className={getFPSColor(fps)}>{fps}</span>
+    </div>
+  );
+};
 
 export default function WorldMap({ geoData, min, max }) {
+  const { isHighQuality } = useGraphicsQuality();
+  const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1.25 });
+
+  const handleReset = useCallback(() => {
+    setPosition({ coordinates: [0, 0], zoom: 1.25 });
+  }, []);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key.toLowerCase() === "r") {
+        handleReset();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [handleReset]);
+
   const colorScale = useMemo(
     () => scaleLinear().domain([min, max]).range(["#a1a1aa", "#fafafa"]),
     [min, max]
@@ -36,18 +94,29 @@ export default function WorldMap({ geoData, min, max }) {
   }, [getColor]);
 
   return (
-    <ComposableMap
-      projection="geoEquirectangular"
-      projectionConfig={{
-        scale: 147,
-      }}
-      style={{ width: "100%", height: "100vh" }}
-    >
-      <ZoomableGroup zoom={1.2} minZoom={1.2} maxZoom={5} center={[0, 0]}>
-        <Geographies geography="countries.json">
-          {memoizedGeographies}
-        </Geographies>
-      </ZoomableGroup>
-    </ComposableMap>
+    <div className="relative w-full h-screen">
+      <ComposableMap
+        projection="geoEquirectangular"
+        projectionConfig={{
+          scale: 147,
+        }}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <ZoomableGroup
+          zoom={position.zoom}
+          center={position.coordinates}
+          onMoveEnd={(position) => setPosition(position)}
+        >
+          <Geographies
+            geography={
+              isHighQuality ? "/countries-high.json" : "/countries-low.json"
+            }
+          >
+            {memoizedGeographies}
+          </Geographies>
+        </ZoomableGroup>
+      </ComposableMap>
+      {isHighQuality && <FPSCounter />}
+    </div>
   );
 }

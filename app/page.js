@@ -1,5 +1,6 @@
-import CommandMenu from "@/components/CommandMenu";
-import Navigation from "@/components/Navigation";
+import { GraphicsQualityProvider } from "@/components/providers/GraphicsQualityContext";
+import CommandMenu from "@/components/ui/CommandMenu";
+import Navigation from "@/components/ui/Navigation";
 import WorldMap from "@/components/WorldMap";
 import clientPromise from "@/lib/mongodb";
 
@@ -36,10 +37,10 @@ export default async function Home({ searchParams }) {
   const max = Math.max(...geoData.map((d) => d.count));
 
   return (
-    <>
+    <GraphicsQualityProvider>
       <WorldMap geoData={geoData} min={min} max={max} />
       <Navigation />
       <CommandMenu requestInfo={requestInfo} />
-    </>
+    </GraphicsQualityProvider>
   );
 }
