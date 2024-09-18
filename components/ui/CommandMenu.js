@@ -1,11 +1,21 @@
 "use client";
 
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/react";
 import {
   MagnifyingGlassIcon,
   UserIcon,
   AdjustmentsHorizontalIcon,
-} from "@heroicons/react/20/solid";
+  MapIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/outline";
 
 import { Command } from "cmdk";
 import { useEffect, useCallback, useState } from "react";
@@ -105,15 +115,31 @@ export default function CommandMenu({ requestInfo }) {
         setIsRequestInfoOpen(false);
       },
     },
+  ];
+
+  const commands2 = [
     {
       name: `Switch to ${isHighQuality ? "Low" : "High"} Graphics`,
-      desc: isHighQuality ? "Switch to lower quality for better performance" : "The performance may be significantly lower",
+      desc: isHighQuality
+        ? "Switch to lower quality for better performance"
+        : "The performance may be significantly lower",
       icon: <AdjustmentsHorizontalIcon className="size-5" />,
       shortct: ["⌘", "Q"],
       onClick: () => {
         toggleQuality();
         setIsOpen(false);
       },
+    },
+    {
+      name: "Reset the Map",
+      desc: "Reset the map to the default position",
+      icon: <MapIcon className="size-5" />,
+      shortct: ["R"],
+    },
+    {
+      name: "Select a Country",
+      desc: "Click on a country to select it",
+      icon: <MapPinIcon className="size-5" />,
     },
   ];
 
@@ -159,7 +185,7 @@ export default function CommandMenu({ requestInfo }) {
               />
             )}
 
-            <Command.List className="overflow-y-auto command-menu-list py-2 max-h-96 [&_div[cmdk-group]]:px-2 [&_div[cmdk-group-heading]]:mb-2 [&_div[cmdk-group-heading]]:text-sm [&_div[cmdk-group-heading]]:font-semibold [&_div[cmdk-group-heading]]:text-zinc-400">
+            <Command.List className="overflow-y-auto command-menu-list py-2 max-h-96 [&_div[cmdk-group]]:px-2 [&_div[cmdk-group-heading]]:my-1 [&_div[cmdk-group-heading]]:text-sm [&_div[cmdk-group-heading]]:font-semibold [&_div[cmdk-group-heading]]:text-zinc-400">
               {!isRequestInfoOpen && (
                 <Command.Empty className="py-2 ml-3 my-1 text-sm">
                   No results found.
@@ -171,12 +197,13 @@ export default function CommandMenu({ requestInfo }) {
                   {countries.map((item) => (
                     <Command.Item
                       key={item.name}
-                      className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                      className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
                     >
                       <div className="flex items-center gap-2 py-2 my-1 text-sm">
                         <img
                           className="w-5 h-auto rounded-sm"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${item.code}.svg`}
+                          loading="lazy"
                         />
                         {item.name} ({item.code})
                       </div>
@@ -273,63 +300,157 @@ export default function CommandMenu({ requestInfo }) {
                   </div>{" "}
                 </div>
               ) : (
-                <Command.Group
-                  heading="General Commands"
-                  label="General Commands"
-                >
-                  {commands.map((command) => (
-                    <Command.Item
-                      key={command.name}
-                      onSelect={command.onClick}
-                      className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
-                    >
-                      <div className="flex items-center gap-2 py-2 my-1 text-sm">
-                        <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
-                          {command.icon}
+                <>
+                  <Command.Group
+                    heading="General Commands"
+                    label="General Commands"
+                  >
+                    {commands.map((command) => (
+                      <Command.Item
+                        key={command.name}
+                        onSelect={command.onClick}
+                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                      >
+                        <div className="flex items-center gap-2 py-2 my-1 text-sm">
+                          <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
+                            {command.icon}
+                          </div>
+                          <div className="flex flex-col">
+                            {command.name}
+                            <p className="text-xs text-zinc-500">
+                              {command?.desc}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex flex-col">
-                          {command.name}
-                          <p className="text-xs text-zinc-500">{command?.desc}</p>
+                        <div className="flex justify-center items-center gap-1.5 text-xs">
+                          {command.shortct.map((shortcut) => (
+                            <kbd
+                              key={shortcut}
+                              className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
+                            >
+                              {shortcut}
+                            </kbd>
+                          ))}
                         </div>
-                      </div>
-                      <div className="flex justify-center items-center gap-1.5 text-xs">
-                        {command.shortct.map((shortcut) => (
-                          <kbd
-                            key={shortcut}
-                            className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
-                          >
-                            {shortcut}
-                          </kbd>
-                        ))}
-                      </div>
-                    </Command.Item>
-                  ))}
-                </Command.Group>
+                      </Command.Item>
+                    ))}
+                  </Command.Group>
+
+                  <Command.Group heading="Maps Commands" label="Maps Commands">
+                    {commands2.map((command) => (
+                      <Command.Item
+                        key={command.name}
+                        onSelect={command.onClick}
+                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                      >
+                        <div className="flex items-center gap-2 py-2 my-1 text-sm">
+                          <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
+                            {command.icon}
+                          </div>
+                          <div className="flex flex-col">
+                            {command.name}
+                            <p className="text-xs text-zinc-500">
+                              {command?.desc}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center gap-1.5 text-xs">
+                          {command.shortct &&
+                            command.shortct.map((shortcut) => (
+                              <kbd
+                                key={shortcut}
+                                className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
+                              >
+                                {shortcut}
+                              </kbd>
+                            ))}
+                        </div>
+                      </Command.Item>
+                    ))}
+                  </Command.Group>
+                </>
               )}
             </Command.List>
 
             <div className="w-full text-sm px-3 py-2 border-t-2 border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <span className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center">
+                  <button
+                    onClick={() => {
+                      setIsOpen(true);
+                      setIsCountrySearchOpen(false);
+                      setIsRequestInfoOpen(false);
+                    }}
+                    className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center select-none"
+                  >
                     Home
-                  </span>
+                  </button>
                   {isCountrySearchOpen && (
-                    <span className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center transition ease-in-out duration-100 data-[closed]:opacity-0 data-[enter]:data-[closed]:translate-x-full data-[leave]:data-[closed]:translate-x-full">
+                    <span className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center select-none">
                       Countries
                     </span>
                   )}
                   {isRequestInfoOpen && (
-                    <span className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center transition ease-in-out duration-100 data-[closed]:opacity-0 data-[enter]:data-[closed]:translate-x-full data-[leave]:data-[closed]:translate-x-full">
+                    <span className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center select-none">
                       Request Info
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-1.5 select-none">
-                  <span className="text-xs font-bold">Open</span>
-                  <span className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md w-5 h-5 flex justify-center items-center">
+                <div className="flex items-center gap-1.5 select-none text-xs">
+                  <span className="font-bold">Open or Use</span>
+                  <kbd className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md w-5 h-5 flex justify-center items-center">
                     ↵
-                  </span>
+                  </kbd>
+                  <div className="w-0.5 h-5 bg-zinc-200 dark:bg-zinc-800 mx-1"></div>
+                  <Menu>
+                    <MenuButton className="flex items-center gap-1.5 outline-none">
+                      <span className="text-xs font-bold">Actions</span>
+                      <kbd className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md w-5 h-5 flex justify-center items-center">
+                        ⌘
+                      </kbd>
+                      <kbd className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md w-5 h-5 flex justify-center items-center">
+                        K
+                      </kbd>
+                    </MenuButton>
+                    <MenuItems
+                      transition
+                      anchor="top end"
+                      className="min-w-32 origin-top-right outline-none p-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm transition duration-75 ease-in-out [--anchor-gap:4px] data-[closed]:scale-90 data-[closed]:opacity-0"
+                    >
+                      <MenuItem>
+                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                          Move
+                          <kbd className="ml-auto font-sans text-xs">
+                            ↑ or ↓
+                          </kbd>
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                          Return/Escape
+                          <kbd className="ml-auto font-sans text-xs">esc</kbd>
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                          Open/Use
+                          <kbd className="ml-auto font-sans text-xs">↵</kbd>
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                          Cycle
+                          <kbd className="ml-auto font-sans text-xs">⇆</kbd>
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                          Cycle backwards
+                          <kbd className="ml-auto font-sans text-xs">⇧ ⇆</kbd>
+                        </button>
+                      </MenuItem>
+                    </MenuItems>
+                  </Menu>
                 </div>
               </div>
             </div>
