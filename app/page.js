@@ -1,3 +1,4 @@
+import CommandMenu from "@/components/CommandMenu";
 import Navigation from "@/components/Navigation";
 import WorldMap from "@/components/WorldMap";
 import clientPromise from "@/lib/mongodb";
@@ -37,7 +38,8 @@ export default async function Home({ searchParams }) {
   return (
     <>
       <WorldMap geoData={geoData} min={min} max={max} />
-      <Navigation requestInfo={requestInfo} />
+      <Navigation />
+      <CommandMenu requestInfo={requestInfo} />
     </>
   );
 }
