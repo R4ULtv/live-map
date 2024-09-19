@@ -127,7 +127,9 @@ export default function CountryData({ requestInfo, countryCode }) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Capital</span>
-                  <CopyButton text={country.capital} />
+                  {country.capital && (
+                    <CopyButton text={country.capital} />
+                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Continent Code</span>
@@ -135,11 +137,15 @@ export default function CountryData({ requestInfo, countryCode }) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Languages</span>
-                  <CopyButton text={country?.languages.join(", ")} />
+                  {country.languages && (
+                    <CopyButton text={country.languages.join(", ")} />
+                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Currency</span>
-                  <CopyButton text={country.currency.join(", ")} />
+                  {country.currency && (
+                    <CopyButton text={country.currency.join(", ")} />
+                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Phone Code</span>
