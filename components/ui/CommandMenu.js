@@ -172,6 +172,7 @@ export default function CommandMenu({ requestInfo }) {
         setIsCountrySearchOpen(false);
         setIsRequestInfoOpen(false);
         setSelectedCountry(null);
+        setInputValue("");
       }}
       className="relative z-50"
     >

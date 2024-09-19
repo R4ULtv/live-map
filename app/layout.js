@@ -3,7 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { CommandMenuProvider } from "@/components/providers/CommandMenuContext";
 
 export const metadata = {
-  title: "Live Map - Raul Carini",
+  title: "Live Map - A World Map of Countries",
   description: "A world map of countries and update for each request.",
 };
 
