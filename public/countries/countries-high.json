@@ -181,7 +181,9 @@
           ],
           "id": "336",
           "properties": {
-            "name": "Vatican"
+            "name": "Vatican",
+            "Alpha2": "VA",
+            "Alpha3": "VAT"
           }
         },
         {
@@ -7712,7 +7714,9 @@
           ],
           "id": "214",
           "properties": {
-            "name": "Dominican Rep."
+            "name": "Dominican Rep.",
+            "Alpha2": "DO",
+            "Alpha3": "DOM"
           }
         },
         {
