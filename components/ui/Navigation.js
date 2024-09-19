@@ -43,7 +43,7 @@ export default function Navigation() {
                 <MagnifyingGlassIcon className="size-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Country Search</TooltipContent>
+            <TooltipContent>Search Countries</TooltipContent>
           </Tooltip>
 
           <div className="w-px h-5 bg-zinc-700"></div>
