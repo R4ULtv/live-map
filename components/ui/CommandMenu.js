@@ -20,14 +20,13 @@ import {
 
 import { Command } from "cmdk";
 import { useEffect, useCallback, useState } from "react";
-import { getCountryData } from "countries-list";
 
-import jsonMap from "@/public/countries-low.json";
+import jsonMap from "@/public/countries/countries-low.json";
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
+import { CountryData } from "@/components/Country";
 
 export default function CommandMenu({ requestInfo }) {
-  const country = getCountryData(requestInfo.country);
   const {
     isOpen,
     setIsOpen,
@@ -35,6 +34,8 @@ export default function CommandMenu({ requestInfo }) {
     setIsCountrySearchOpen,
     isRequestInfoOpen,
     setIsRequestInfoOpen,
+    selectedCountry,
+    setSelectedCountry,
   } = useCommandMenu();
   const { isHighQuality, toggleQuality } = useGraphicsQuality();
 
@@ -54,6 +55,11 @@ export default function CommandMenu({ requestInfo }) {
           setIsCountrySearchOpen(false);
           setIsRequestInfoOpen(false);
           setIsOpen(true);
+        } else if (selectedCountry !== null) {
+          setIsCountrySearchOpen(true);
+          setSelectedCountry(null);
+          setIsRequestInfoOpen(false);
+          setIsOpen(false);
         } else {
           setIsOpen(false);
         }
@@ -93,11 +99,16 @@ export default function CommandMenu({ requestInfo }) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  const isDialogOpen = isOpen || isCountrySearchOpen || isRequestInfoOpen;
+  const isDialogOpen =
+    isOpen ||
+    isCountrySearchOpen ||
+    isRequestInfoOpen ||
+    selectedCountry !== null;
 
   const commands = [
     {
       name: "Request Geolocation Data",
+      desc: "Watch your geolocation data get from your request",
       icon: <UserIcon className="size-5" />,
       shortct: ["⌘", "G"],
       onClick: () => {
@@ -108,6 +119,7 @@ export default function CommandMenu({ requestInfo }) {
     },
     {
       name: "Search for a Country",
+      desc: "Find a country by name or code and watch its data",
       icon: <MagnifyingGlassIcon className="size-5" />,
       shortct: ["⌘", "F"],
       onClick: () => {
@@ -157,6 +169,7 @@ export default function CommandMenu({ requestInfo }) {
         setIsOpen(false);
         setIsCountrySearchOpen(false);
         setIsRequestInfoOpen(false);
+        setSelectedCountry(null);
       }}
       className="relative z-50"
     >
@@ -176,7 +189,7 @@ export default function CommandMenu({ requestInfo }) {
             className="outline-none"
             loop
           >
-            {!isRequestInfoOpen && (
+            {!isRequestInfoOpen && selectedCountry === null && (
               <Command.Input
                 value={inputValue}
                 onValueChange={setInputValue}
@@ -191,9 +204,9 @@ export default function CommandMenu({ requestInfo }) {
               />
             )}
 
-            <Command.List className="overflow-y-auto command-menu-list py-2 max-h-96 [&_div[cmdk-group]]:px-2 [&_div[cmdk-group-heading]]:my-1 [&_div[cmdk-group-heading]]:text-sm [&_div[cmdk-group-heading]]:font-semibold [&_div[cmdk-group-heading]]:text-zinc-400">
-              {!isRequestInfoOpen && (
-                <Command.Empty className="py-2 ml-3 my-1 text-sm">
+            <Command.List className="overflow-y-auto pb-2 max-h-96 [&_div[cmdk-group]]:px-2 [&_div[cmdk-group-heading]]:my-1 [&_div[cmdk-group-heading]]:text-sm [&_div[cmdk-group-heading]]:font-semibold [&_div[cmdk-group-heading]]:text-zinc-400">
+              {!isRequestInfoOpen && selectedCountry === null && (
+                <Command.Empty className="py-2 ml-3 my-1 text-sm text-zinc-500">
                   No results found.
                 </Command.Empty>
               )}
@@ -203,6 +216,10 @@ export default function CommandMenu({ requestInfo }) {
                   {countries.map((item) => (
                     <Command.Item
                       key={item.name}
+                      onSelect={() => {
+                        setSelectedCountry(item.code);
+                        setIsCountrySearchOpen(false);
+                      }}
                       className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
                     >
                       <div className="flex items-center gap-2 py-2 my-1 text-sm">
@@ -216,95 +233,13 @@ export default function CommandMenu({ requestInfo }) {
                     </Command.Item>
                   ))}
                 </Command.Group>
+              ) : selectedCountry !== null ? (
+                <CountryData countryCode={selectedCountry} />
               ) : isRequestInfoOpen ? (
-                <div className="space-y-2 py-2">
-                  <div className="flex items-center justify-between text-sm font-semibold text-zinc-400 px-4">
-                    <div className="flex items-center gap-2">
-                      <img
-                        className="w-7 h-auto rounded"
-                        src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${requestInfo.country}.svg`}
-                      />
-                      <p>{requestInfo.city}</p>
-                    </div>
-                    <p>{requestInfo.country}</p>
-                  </div>
-                  <div className="bg-zinc-800 w-full h-0.5 rounded"></div>
-                  <div className="px-4">
-                    <p className="text-zinc-400 font-semibold text-sm mb-1">
-                      Geolocation Data
-                    </p>
-                    <div className="space-y-2 text-zinc-300">
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Latitude</span>
-                          <span>{requestInfo.latitude}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Longitude</span>
-                          <span>{requestInfo.longitude}</span>
-                        </div>
-                      </div>
-
-                      <div className="bg-zinc-800 w-full h-px"></div>
-
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Country</span>
-                          <span>{country.name}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">City</span>
-                          <span>{requestInfo.city}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-zinc-800 w-full h-0.5 rounded"></div>
-                  <div className="px-4">
-                    <p className="text-zinc-400 font-semibold text-sm mb-1">
-                      Country General Information
-                    </p>
-                    <div className="space-y-2 text-zinc-300">
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Languages</span>
-                          <span className="uppercase">
-                            {country.languages.join(", ")}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Currency</span>
-                          <span>{country.currency.join(", ")}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Phone Code</span>
-                          <div>
-                            {country.phone.map((phone, idx) => (
-                              <span key={idx}>+{phone}</span>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Capital</span>
-                          <span>{country.capital}</span>
-                        </div>
-                      </div>
-
-                      <div className="bg-zinc-800 w-full h-px"></div>
-
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">ISO Alpha-2</span>
-                          <span>{country.iso2}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">ISO Alpha-3</span>
-                          <span>{country.iso3}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <CountryData
+                  requestInfo={requestInfo}
+                  countryCode={requestInfo.country}
+                />
               ) : (
                 <>
                   <Command.Group heading="General" label="General">
@@ -430,14 +365,26 @@ export default function CommandMenu({ requestInfo }) {
                       setIsOpen(true);
                       setIsCountrySearchOpen(false);
                       setIsRequestInfoOpen(false);
+                      setSelectedCountry(null);
                     }}
                     className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center select-none"
                   >
                     Home
                   </button>
-                  {isCountrySearchOpen && (
-                    <span className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center select-none">
+                  {(isCountrySearchOpen || selectedCountry !== null) && (
+                    <button
+                      onClick={() => {
+                        setIsCountrySearchOpen(true);
+                        setSelectedCountry(null);
+                      }}
+                      className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center select-none"
+                    >
                       Countries
+                    </button>
+                  )}
+                  {selectedCountry && (
+                    <span className="px-1 text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded flex justify-center items-center select-none">
+                      {selectedCountry}
                     </span>
                   )}
                   {isRequestInfoOpen && (

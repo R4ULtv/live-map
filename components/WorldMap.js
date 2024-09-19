@@ -9,6 +9,7 @@ import {
   ZoomableGroup,
 } from "react-simple-maps";
 import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
+import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 
 const FPSCounter = () => {
   const [fps, setFps] = useState(0);
@@ -47,6 +48,8 @@ const FPSCounter = () => {
 
 export default function WorldMap({ geoData, min, max }) {
   const { isHighQuality } = useGraphicsQuality();
+  const { setSelectedCountry } = useCommandMenu();
+
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1.2 });
 
   const handleReset = useCallback(() => {
@@ -87,7 +90,11 @@ export default function WorldMap({ geoData, min, max }) {
           key={geo.rsmKey}
           geography={geo}
           fill={getColor(geo)}
-          className="outline-none stroke-0.5 stroke-zinc-800 hover:fill-emerald-500"
+          onClick={() =>
+            geo.properties.Alpha2 && setSelectedCountry(geo.properties.Alpha2)
+          }
+          className="outline-none select-none stroke-0.5 stroke-zinc-800 hover:fill-emerald-500"
+          tabIndex={-1}
         />
       ));
   }, [getColor]);
@@ -110,7 +117,9 @@ export default function WorldMap({ geoData, min, max }) {
         >
           <Geographies
             geography={
-              isHighQuality ? "/countries-high.json" : "/countries-low.json"
+              isHighQuality
+                ? "/countries/countries-high.json"
+                : "/countries/countries-low.json"
             }
           >
             {memoizedGeographies}
