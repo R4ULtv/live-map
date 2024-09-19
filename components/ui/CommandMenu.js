@@ -36,6 +36,8 @@ export default function CommandMenu({ requestInfo }) {
     setIsRequestInfoOpen,
     selectedCountry,
     setSelectedCountry,
+    isShowFps,
+    toggleFps,
   } = useCommandMenu();
   const { isHighQuality, toggleQuality } = useGraphicsQuality();
 
@@ -88,6 +90,10 @@ export default function CommandMenu({ requestInfo }) {
         e.preventDefault();
         toggleQuality();
         setIsOpen(false);
+      } else if (e.ctrlKey && e.shiftKey && e.key === "P") {
+        e.preventDefault();
+        toggleFps();
+        setIsOpen(false);
       }
     },
     [isOpen, isCountrySearchOpen, isRequestInfoOpen, selectedCountry]
@@ -137,10 +143,22 @@ export default function CommandMenu({ requestInfo }) {
       },
     },
     {
+      name: `${isShowFps ? "Hide" : "Show"} FPS Stats`,
+      desc: isShowFps
+        ? "Watch your performance FPS, may can cause lag"
+        : "Hide your FPS stats, better performance",
+      icon: <AdjustmentsHorizontalIcon className="size-5" />,
+      shortct: ["⌘", "⇧", "P"],
+      onClick: () => {
+        toggleFps();
+        setIsOpen(false);
+      },
+    },
+    {
       name: "Reset the Map",
       desc: "Reset the map to the default position",
       icon: <MapIcon className="size-5" />,
-      shortct: ["R"],
+      shortct: ["⌘", "R"],
     },
     {
       name: "Select a Country",
