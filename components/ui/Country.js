@@ -36,9 +36,7 @@ export default function CountryData({ requestInfo, countryCode }) {
   );
 
   return (
-    <TabGroup
-      className="space-y-2"
-    >
+    <TabGroup className="space-y-2">
       <div className="overflow-hidden h-10 relative">
         <img
           className="w-full h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4"
@@ -51,17 +49,17 @@ export default function CountryData({ requestInfo, countryCode }) {
         />
       </div>
       <TabList className="flex items-center justify-between px-1 border-b border-zinc-800 pb-2">
-        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-800 data-[selected]:bg-zinc-800 text-zinc-300 text-sm flex items-center gap-1 outline-none">
+        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-800 data-[selected]:bg-zinc-800 text-zinc-300 text-sm flex items-center gap-1 outline-none border border-zinc-800">
           <IdentificationIcon className="size-4" />
           General Information
         </Tab>
-        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-800 data-[selected]:bg-zinc-800 text-zinc-300 text-sm flex items-center gap-1 outline-none">
+        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-800 data-[selected]:bg-zinc-800 text-zinc-300 text-sm flex items-center gap-1 outline-none border border-zinc-800">
           <ChartBarIcon className="size-4" />
           Statistics
         </Tab>
       </TabList>
       <TabPanels>
-        <TabPanel>
+        <TabPanel className="space-y-2">
           {requestInfo && (
             <>
               <div className="px-4">
@@ -166,9 +164,9 @@ export default function CountryData({ requestInfo, countryCode }) {
             </div>
           </div>
         </TabPanel>
-        <TabPanel>
-          <div className="flex items-center justify-center h-40 mx-2 border border-zinc-800 rounded-md">
-            <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
+        <TabPanel className="space-y-2">
+          <div className="flex items-center justify-center h-40 mx-2 border border-zinc-800 rounded-md border-dashed">
+            <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md">
               <ChartBarIcon className="size-6" />
             </div>
           </div>
