@@ -24,7 +24,7 @@ import { useEffect, useCallback, useState } from "react";
 import jsonMap from "@/public/countries/countries-low.json";
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
-import { CountryData } from "@/components/Country";
+import CountryData from "@/components/ui/Country";
 
 export default function CommandMenu({ requestInfo }) {
   const {
@@ -91,6 +91,8 @@ export default function CommandMenu({ requestInfo }) {
       setIsCountrySearchOpen,
       isRequestInfoOpen,
       setIsRequestInfoOpen,
+      selectedCountry,
+      setSelectedCountry,
     ]
   );
 
@@ -98,12 +100,6 @@ export default function CommandMenu({ requestInfo }) {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
-
-  const isDialogOpen =
-    isOpen ||
-    isCountrySearchOpen ||
-    isRequestInfoOpen ||
-    selectedCountry !== null;
 
   const commands = [
     {
@@ -160,6 +156,12 @@ export default function CommandMenu({ requestInfo }) {
     window.open(href, "_blank");
     setIsOpen(false);
   };
+
+  const isDialogOpen =
+    isOpen ||
+    isCountrySearchOpen ||
+    isRequestInfoOpen ||
+    selectedCountry !== null;
 
   return (
     <Dialog
