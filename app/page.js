@@ -38,7 +38,7 @@ export default async function Home({ searchParams }) {
 
   return (
     <GraphicsQualityProvider>
-      <WorldMap geoData={geoData} min={min} max={max} />
+      <WorldMap geoData={geoData} min={min} max={max} requestInfo={requestInfo} />
       <Navigation />
       <CommandMenu requestInfo={requestInfo} />
     </GraphicsQualityProvider>
