@@ -66,6 +66,8 @@ export default function WorldMap({ geoData, min, max }) {
     const handleKeyPress = (event) => {
       if (event.key.toLowerCase() === "r") {
         handleReset();
+      } else if (event.key === "Enter" && hoverCountry) {
+        setSelectedCountry(hoverCountry);
       }
     };
 
@@ -74,7 +76,7 @@ export default function WorldMap({ geoData, min, max }) {
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [handleReset]);
+  }, [handleReset, hoverCountry]);
 
   const colorScale = useMemo(
     () => scaleLinear().domain([min, max]).range(["#a1a1aa", "#fafafa"]),
@@ -105,7 +107,7 @@ export default function WorldMap({ geoData, min, max }) {
           onMouseLeave={() => setHoverCountry(null)}
         />
       ));
-  }, [getColor]);
+  }, [getColor, setHoverCountry]);
 
   return (
     <div className="relative w-screen h-screen">
