@@ -68,32 +68,29 @@ export default function CommandMenu({ requestInfo }) {
         setIsOpen(!isOpen);
         setIsCountrySearchOpen(false);
         setIsRequestInfoOpen(false);
+        setSelectedCountry(null);
+        setInputValue("");
       } else if (e.ctrlKey && e.key === "f") {
         e.preventDefault();
         setIsCountrySearchOpen(!isCountrySearchOpen);
         setIsOpen(false);
         setIsRequestInfoOpen(false);
+        setSelectedCountry(null);
+        setInputValue("");
       } else if (e.ctrlKey && e.key === "g") {
         e.preventDefault();
         setIsRequestInfoOpen(!isRequestInfoOpen);
         setIsOpen(false);
         setIsCountrySearchOpen(false);
+        setSelectedCountry(null);
+        setInputValue("");
       } else if (e.ctrlKey && e.key === "q") {
         e.preventDefault();
         toggleQuality();
         setIsOpen(false);
       }
     },
-    [
-      isOpen,
-      setIsOpen,
-      isCountrySearchOpen,
-      setIsCountrySearchOpen,
-      isRequestInfoOpen,
-      setIsRequestInfoOpen,
-      selectedCountry,
-      setSelectedCountry,
-    ]
+    [isOpen, isCountrySearchOpen, isRequestInfoOpen, selectedCountry]
   );
 
   useEffect(() => {
