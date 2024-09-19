@@ -48,7 +48,7 @@ export default function CountryData({ requestInfo, countryCode }) {
           }
         />
       </div>
-      <TabList className="flex items-center justify-between px-1 border-b border-zinc-800 pb-2">
+      <TabList className="flex items-center justify-between px-2 border-b border-zinc-800 pb-2">
         <Tab className="px-2 py-1 rounded-md hover:bg-zinc-800 data-[selected]:bg-zinc-800 text-zinc-300 text-sm flex items-center gap-1 outline-none border border-zinc-800">
           <IdentificationIcon className="size-4" />
           General Information
@@ -127,9 +127,7 @@ export default function CountryData({ requestInfo, countryCode }) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Capital</span>
-                  {country.capital && (
-                    <CopyButton text={country.capital} />
-                  )}
+                  {country.capital && <CopyButton text={country.capital} />}
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Continent Code</span>
@@ -137,13 +135,13 @@ export default function CountryData({ requestInfo, countryCode }) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Languages</span>
-                  {country.languages && (
+                  {country.languages.length > 0 && (
                     <CopyButton text={country.languages.join(", ")} />
                   )}
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Currency</span>
-                  {country.currency && (
+                  {country.currency.length > 0 && (
                     <CopyButton text={country.currency.join(", ")} />
                   )}
                 </div>
