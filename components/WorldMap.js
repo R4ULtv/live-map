@@ -10,6 +10,7 @@ import {
 } from "react-simple-maps";
 import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
+import { getCountryData } from "countries-list";
 
 const FPSCounter = () => {
   const [fps, setFps] = useState(0);
@@ -40,13 +41,18 @@ const FPSCounter = () => {
   };
 
   return (
-    <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white p-2 rounded">
-      FPS: <span className={getFPSColor(fps)}>{fps}</span>
+    <div className="absolute top-2 right-2 flex items-center justify-center z-50">
+      <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
+        <div className="py-1 px-2 data-[hover]:bg-zinc-800 data-[focus]:bg-zinc-800 rounded-full outline-none text-sm text-zinc-200">
+          FPS: <span className={getFPSColor(fps)}>{fps}</span>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default function WorldMap({ geoData, min, max }) {
+  const [hoverCountry, setHoverCountry] = useState(null);
   const { isHighQuality } = useGraphicsQuality();
   const { setSelectedCountry } = useCommandMenu();
 
@@ -95,12 +101,31 @@ export default function WorldMap({ geoData, min, max }) {
           }
           className="outline-none select-none stroke-0.5 stroke-zinc-800 hover:fill-emerald-500"
           tabIndex={-1}
+          onMouseEnter={() => setHoverCountry(geo.properties.Alpha2 || null)}
+          onMouseLeave={() => setHoverCountry(null)}
         />
       ));
   }, [getColor]);
 
   return (
     <div className="relative w-screen h-screen">
+      {hoverCountry !== null && (
+        <div className="absolute top-5 left-0 right-0 flex items-center justify-center z-50">
+          <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
+            <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1.5">
+              <img
+                className="w-5 h-auto rounded-sm"
+                src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${hoverCountry}.svg`}
+                loading="lazy"
+              />
+              <span className="text-zinc-200 text-sm">
+                {getCountryData(hoverCountry)?.name}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ComposableMap
         projection="geoEquirectangular"
         projectionConfig={{
