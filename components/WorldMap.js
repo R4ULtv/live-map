@@ -6,33 +6,47 @@ import {
   ComposableMap,
   Geographies,
   Geography,
+  Marker,
   ZoomableGroup,
 } from "react-simple-maps";
 import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { getCountryData } from "countries-list";
+import { MapPinIcon } from "@heroicons/react/16/solid";
 
 const FPSCounter = () => {
   const [fps, setFps] = useState(0);
+  const [avgFps, setAvgFps] = useState(0);
 
-  useEffect(() => {
+  const updateFPS = useCallback(() => {
     let frameCount = 0;
     let lastTime = performance.now();
+    let totalFps = 0;
+    let fpsUpdateCount = 0;
 
-    const updateFPS = () => {
+    const animate = () => {
       const now = performance.now();
       frameCount++;
       if (now - lastTime > 1000) {
-        setFps(Math.round((frameCount * 1000) / (now - lastTime)));
+        const currentFps = Math.round((frameCount * 1000) / (now - lastTime));
+        setFps(currentFps);
+        totalFps += currentFps;
+        fpsUpdateCount++;
+        setAvgFps(Math.round(totalFps / fpsUpdateCount));
         frameCount = 0;
         lastTime = now;
       }
-      requestAnimationFrame(updateFPS);
+      requestAnimationFrame(animate);
     };
 
-    const animationId = requestAnimationFrame(updateFPS);
+    const animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
   }, []);
+
+  useEffect(() => {
+    const cleanup = updateFPS();
+    return cleanup;
+  }, [updateFPS]);
 
   const getFPSColor = (fps) => {
     if (fps >= 60) return "text-green-400";
@@ -43,18 +57,25 @@ const FPSCounter = () => {
   return (
     <div className="absolute top-2 right-2 flex items-center justify-center z-50">
       <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
-        <div className="py-1 px-2 data-[hover]:bg-zinc-800 data-[focus]:bg-zinc-800 rounded-full outline-none text-sm text-zinc-200">
+        <div className="py-1 px-2 hover:bg-zinc-800 data-[focus]:bg-zinc-800 rounded-full outline-none text-sm text-zinc-200">
           FPS: <span className={getFPSColor(fps)}>{fps}</span>
+        </div>
+        <div className="w-px h-5 bg-zinc-700"></div>
+        <div className="py-1 px-2 hover:bg-zinc-800 data-[focus]:bg-zinc-800 rounded-full outline-none text-sm text-zinc-200">
+          Avg FPS: <span className={getFPSColor(avgFps)}>{avgFps}</span>
         </div>
       </div>
     </div>
   );
 };
 
-export default function WorldMap({ geoData, min, max }) {
+export default function WorldMap({ geoData, min, max, requestInfo }) {
   const [hoverCountry, setHoverCountry] = useState(null);
+  const [hoverPing, setHoverPing] = useState(null);
+
   const { isHighQuality } = useGraphicsQuality();
-  const { setSelectedCountry } = useCommandMenu();
+  const { setSelectedCountry, setIsRequestInfoOpen, isShowFps } =
+    useCommandMenu();
 
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1.2 });
 
@@ -63,10 +84,12 @@ export default function WorldMap({ geoData, min, max }) {
   }, []);
 
   useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (event.key.toLowerCase() === "r") {
+    const handleKeyPress = (e) => {
+      if (e.ctrlKey && e.key === "r") {
+        e.preventDefault();
         handleReset();
-      } else if (event.key === "Enter" && hoverCountry) {
+      } else if (e.key === "Enter" && hoverCountry) {
+        e.preventDefault();
         setSelectedCountry(hoverCountry);
       }
     };
@@ -101,7 +124,7 @@ export default function WorldMap({ geoData, min, max }) {
           onClick={() =>
             geo.properties.Alpha2 && setSelectedCountry(geo.properties.Alpha2)
           }
-          className="outline-none select-none stroke-0.5 stroke-zinc-800 hover:fill-emerald-500"
+          className="outline-none select-none stroke-0.5 stroke-zinc-800 hover:fill-emerald-500 hover:cursor-pointer"
           tabIndex={-1}
           onMouseEnter={() => setHoverCountry(geo.properties.Alpha2 || null)}
           onMouseLeave={() => setHoverCountry(null)}
@@ -127,18 +150,33 @@ export default function WorldMap({ geoData, min, max }) {
           </div>
         </div>
       )}
+      {hoverPing !== null && (
+        <div className="absolute top-5 left-0 right-0 flex items-center justify-center z-50">
+          <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center p-1">
+            <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1">
+              <MapPinIcon className="size-5 text-rose-500" />
+              <span className="text-zinc-200 text-sm">
+                {requestInfo.city || requestInfo.country} ({requestInfo.country}
+                )
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       <ComposableMap
         projection="geoEquirectangular"
         projectionConfig={{
-          scale: 150,
+          scale: 270,
         }}
         className="w-full h-full outline-none"
+        width={1920}
+        height={1080}
       >
         <ZoomableGroup
           zoom={position.zoom}
           center={position.coordinates}
-          minZoom={1}
+          minZoom={1.2}
           maxZoom={5}
           onMoveEnd={(position) => setPosition(position)}
         >
@@ -151,9 +189,25 @@ export default function WorldMap({ geoData, min, max }) {
           >
             {memoizedGeographies}
           </Geographies>
+          {requestInfo && (
+            <Marker
+              coordinates={[requestInfo.longitude, requestInfo.latitude]}
+              onClick={() => setIsRequestInfoOpen(true)}
+              onMouseEnter={() => setHoverPing(requestInfo.country)}
+              onMouseLeave={() => setHoverPing(null)}
+            >
+              <path
+                className="-translate-y-5 -translate-x-2.5 fill-rose-500 stroke-0.5 stroke-zinc-800 hover:cursor-pointer"
+                viewBox="0 0 20 20"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"
+              />
+            </Marker>
+          )}
         </ZoomableGroup>
       </ComposableMap>
-      {isHighQuality && <FPSCounter />}
+      {isShowFps && <FPSCounter />}
     </div>
   );
 }
