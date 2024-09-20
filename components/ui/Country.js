@@ -28,10 +28,10 @@ export default function CountryData({ requestInfo, countryCode }) {
       onClick={() => copyToClipboard(rawText ? rawText : text)}
       className="hover:bg-zinc-700 focus:bg-zinc-700 px-2 rounded transition-colors outline-none"
     >
-      {text}
       {copiedText === text && (
-        <span className="ml-2 text-xs text-green-400">Copied!</span>
+        <span className="mr-2 text-xs text-emerald-400">Copied!</span>
       )}
+      {text}
     </Button>
   );
 

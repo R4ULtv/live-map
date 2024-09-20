@@ -9,10 +9,11 @@ import {
   Marker,
   ZoomableGroup,
 } from "react-simple-maps";
-import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
-import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { getCountryData } from "countries-list";
 import { MapPinIcon } from "@heroicons/react/16/solid";
+
+import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
+import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import FPSChart from "@/components/ui/FPSChart";
 
 const FPSCounter = () => {
@@ -55,9 +56,9 @@ const FPSCounter = () => {
   }, [updateFPS]);
 
   const getFPSColor = (fps) => {
-    if (fps >= 60) return "text-green-400";
-    if (fps >= 30) return "text-yellow-400";
-    return "text-red-400";
+    if (fps >= 60) return "text-emerald-400";
+    if (fps >= 30) return "text-amber-400";
+    return "text-rose-400";
   };
 
   return (
