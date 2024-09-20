@@ -169,10 +169,11 @@ export default function CountryData({ requestInfo, countryCode }) {
           </div>
         </TabPanel>
         <TabPanel className="space-y-2">
-          <div className="flex items-center justify-center h-40 mx-2 border border-zinc-800 rounded-md border-dashed">
+          <div className="flex flex-col items-center justify-center gap-1 h-40 mx-2 border border-zinc-800 rounded-md border-dashed">
             <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md">
               <ChartBarIcon className="size-6" />
             </div>
+            <span className="text-zinc-300">Coming Soon</span>
           </div>
         </TabPanel>
       </TabPanels>
