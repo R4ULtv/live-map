@@ -5,21 +5,25 @@ import WorldMap from "@/components/WorldMap";
 import clientPromise from "@/lib/mongodb";
 
 export default async function Home({ searchParams }) {
-  const requestInfo = {
-    country: searchParams.country,
-    city: searchParams.city,
-    region: searchParams.region,
-    latitude: searchParams.latitude,
-    longitude: searchParams.longitude,
-    createdAt: new Date(),
-    requestID: searchParams.requestID,
-  };
+  const requestInfo = searchParams.requestID
+    ? {
+        country: searchParams.country,
+        city: searchParams.city,
+        region: searchParams.region,
+        latitude: searchParams.latitude,
+        longitude: searchParams.longitude,
+        createdAt: new Date(),
+        requestID: searchParams.requestID,
+      }
+    : null;
 
   const client = await clientPromise;
   const db = client.db("production");
-  const userLocation = await db
-    .collection("locations")
-    .insertOne({ ...requestInfo });
+  if (requestInfo) {
+    const userLocation = await db
+      .collection("locations")
+      .insertOne({ ...requestInfo });
+  }
 
   const geoData = await db
     .collection("locations")
@@ -38,7 +42,12 @@ export default async function Home({ searchParams }) {
 
   return (
     <GraphicsQualityProvider>
-      <WorldMap geoData={geoData} min={min} max={max} requestInfo={requestInfo} />
+      <WorldMap
+        geoData={geoData}
+        min={min}
+        max={max}
+        requestInfo={requestInfo}
+      />
       <Navigation />
       <CommandMenu requestInfo={requestInfo} />
     </GraphicsQualityProvider>
