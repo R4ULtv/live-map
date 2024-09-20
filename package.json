@@ -20,7 +20,8 @@
     "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18",
-    "react-simple-maps": "^4.0.0-beta.6"
+    "react-simple-maps": "^4.0.0-beta.6",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "postcss": "^8",
