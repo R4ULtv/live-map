@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+div[cmdk-list] {
+  scrollbar-width: thin;
+  scrollbar-color: #3f3f46 transparent;
+}
