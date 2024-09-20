@@ -5,6 +5,7 @@ import {
   DocumentTextIcon,
   MagnifyingGlassIcon,
   UserIcon,
+  UsersIcon,
 } from "@heroicons/react/16/solid";
 import { Button } from "@headlessui/react";
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
@@ -14,10 +15,31 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useEffect, useState } from "react";
+import { getOnlineCount } from "@/components/server/online";
+import numeral from "numeral";
 
 export default function Navigation() {
   const { setIsOpen, setIsCountrySearchOpen, setIsRequestInfoOpen } =
     useCommandMenu();
+  const [onlineUsers, setOnlineUsers] = useState(0);
+
+  useEffect(() => {
+    const fetchOnlineCount = async () => {
+      try {
+        const count = await getOnlineCount();
+        setOnlineUsers(count);
+      } catch (error) {
+        setOnlineUsers(0);
+        console.error(error);
+      }
+    };
+
+    fetchOnlineCount();
+
+    const interval = setInterval(fetchOnlineCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <TooltipProvider>
@@ -79,6 +101,19 @@ export default function Navigation() {
               </a>
             </TooltipTrigger>
             <TooltipContent>Blog Post</TooltipContent>
+          </Tooltip>
+
+          <div className="w-px h-5 bg-zinc-700"></div>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="p-2 data-[hover]:bg-zinc-800 data-[focus]:bg-zinc-800 rounded-full outline-none relative group">
+                <UsersIcon className="size-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Online Users: {numeral(onlineUsers).format("0a")}
+            </TooltipContent>
           </Tooltip>
 
           <div className="w-px h-5 bg-zinc-700"></div>
