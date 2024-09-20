@@ -12,7 +12,7 @@ export default async function Home({ searchParams }) {
     latitude: searchParams.latitude,
     longitude: searchParams.longitude,
     createdAt: new Date(),
-    requestID: crypto.randomUUID(),
+    requestID: searchParams.requestID,
   };
 
   const client = await clientPromise;
