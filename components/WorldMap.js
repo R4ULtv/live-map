@@ -13,10 +13,12 @@ import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContex
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { getCountryData } from "countries-list";
 import { MapPinIcon } from "@heroicons/react/16/solid";
+import FPSChart from "@/components/ui/FPSChart";
 
 const FPSCounter = () => {
   const [fps, setFps] = useState(0);
   const [avgFps, setAvgFps] = useState(0);
+  const [historyFps, setHistoryFps] = useState([]);
 
   const updateFPS = useCallback(() => {
     let frameCount = 0;
@@ -30,6 +32,10 @@ const FPSCounter = () => {
       if (now - lastTime > 1000) {
         const currentFps = Math.round((frameCount * 1000) / (now - lastTime));
         setFps(currentFps);
+        setHistoryFps((prevData) => {
+          const newData = [...prevData, { time: Date.now(), fps: currentFps }];
+          return newData.filter((d) => Date.now() - d.time <= 30000);
+        });
         totalFps += currentFps;
         fpsUpdateCount++;
         setAvgFps(Math.round(totalFps / fpsUpdateCount));
@@ -55,15 +61,19 @@ const FPSCounter = () => {
   };
 
   return (
-    <div className="absolute top-2 right-2 flex items-center justify-center z-50">
-      <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
-        <div className="py-1 px-2 hover:bg-zinc-800 data-[focus]:bg-zinc-800 rounded-full outline-none text-sm text-zinc-200">
-          FPS: <span className={getFPSColor(fps)}>{fps}</span>
+    <div className="absolute top-2 right-2 flex flex-col items-center justify-center gap-1 z-50">
+      <div className="rounded-2xl border border-zinc-700 bg-zinc-900 text-zinc-200 shadow p-1 select-none">
+        <div className="flex items-center justify-center gap-1 w-full">
+          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-sm text-zinc-200">
+            FPS: <span className={getFPSColor(fps)}>{fps}</span>
+          </div>
+          <div className="w-px h-5 bg-zinc-700"></div>
+          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-sm text-zinc-200">
+            Avg FPS: <span className={getFPSColor(avgFps)}>{avgFps}</span>
+          </div>
         </div>
-        <div className="w-px h-5 bg-zinc-700"></div>
-        <div className="py-1 px-2 hover:bg-zinc-800 data-[focus]:bg-zinc-800 rounded-full outline-none text-sm text-zinc-200">
-          Avg FPS: <span className={getFPSColor(avgFps)}>{avgFps}</span>
-        </div>
+        <div className="w-full h-px bg-zinc-700 mt-1 mb-2"></div>
+        <FPSChart data={historyFps} />
       </div>
     </div>
   );
