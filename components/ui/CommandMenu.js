@@ -16,6 +16,7 @@ import {
   MapIcon,
   MapPinIcon,
   DocumentTextIcon,
+  Bars3BottomRightIcon,
 } from "@heroicons/react/24/outline";
 
 import { Command } from "cmdk";
@@ -145,9 +146,9 @@ export default function CommandMenu({ requestInfo }) {
     {
       name: `${isShowFps ? "Hide" : "Show"} FPS Stats`,
       desc: isShowFps
-        ? "Watch your performance FPS, may can cause lag"
-        : "Hide your FPS stats, better performance",
-      icon: <AdjustmentsHorizontalIcon className="size-5" />,
+        ? "Hide your FPS stats, better performance"
+        : "Watch your performance FPS, may can cause lag",
+      icon: <Bars3BottomRightIcon className="size-5" />,
       shortct: ["⌘", "⇧", "P"],
       onClick: () => {
         toggleFps();
