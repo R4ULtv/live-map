@@ -32,7 +32,11 @@ export default function Navigation({ fetchURL }) {
           cache: "no-store",
         });
         const data = await response.json();
-        setOnlineUsers(data.count);
+        if (data.count > 0) {
+          setOnlineUsers(data.count);
+        } else {
+          setOnlineUsers(1);
+        }
       } catch (error) {
         setOnlineUsers(0);
         console.error(error);
