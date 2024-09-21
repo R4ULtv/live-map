@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<img alt="Live Map - Simple World Map" src="https://www.raulcarini.dev/api/dynamic-og?title=Live%20Map&description=A%20world%20map%20with%20stats%20and%20general%20information%20for%20each%20country">
 
-## Getting Started
+The Live Map Project is an interactive web application that allows users to visualize and interact with geographical data. It provides functionalities such as searching for countries, viewing geolocation data, and toggling graphics quality for performance optimization. The application is built using React and leverages various libraries for UI components and data visualization.
 
-First, run the development server:
+## Features
+- **Country Search**: Users can search for countries by name or code and view relevant data.
+- **Geolocation Data**: Users can request and view geolocation data for specific countries.
+- **Graphics Quality Toggle**: Users can switch between high and low graphics quality to optimize performance based on their device capabilities.
+- **FPS Monitoring**: The application displays real-time frames per second (FPS) statistics to help users gauge performance.
+- **Interactive Map**: Users can click on countries to select them and view additional information.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technologies Used
+- **NextJs**: For building the user interface.
+- **recharts**: For data visualization.
+- **Headless UI**: For accessible UI components.
+- **cmdk**: For command menu functionality.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
+To run the project locally, follow these steps:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/r4ultv/live-map.git
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+2. Navigate to the project directory:
+   ```bash
+   cd live-map
+   ```
 
-## Learn More
+3. Install the dependencies:
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Open your browser and navigate to `http://localhost:3000`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Usage
+- Use the command menu (Ctrl + K) to access various functionalities.
+- Search for a country using the search feature (Ctrl + F).
+- Toggle graphics quality using (Ctrl + Q).
+- View FPS statistics by toggling the FPS display (Ctrl + Shift + P).
 
-## Deploy on Vercel
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
