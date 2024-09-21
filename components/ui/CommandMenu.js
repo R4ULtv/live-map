@@ -105,6 +105,17 @@ export default function CommandMenu({ requestInfo }) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
+  const handleLink = (href) => {
+    window.open(href, "_blank");
+    setIsOpen(false);
+  };
+
+  const isDialogOpen =
+    isOpen ||
+    isCountrySearchOpen ||
+    isRequestInfoOpen ||
+    selectedCountry !== null;
+
   const commands = [
     {
       name: "Request Geolocation Data",
@@ -168,16 +179,35 @@ export default function CommandMenu({ requestInfo }) {
     },
   ];
 
-  const handleLink = (href) => {
-    window.open(href, "_blank");
-    setIsOpen(false);
-  };
-
-  const isDialogOpen =
-    isOpen ||
-    isCountrySearchOpen ||
-    isRequestInfoOpen ||
-    selectedCountry !== null;
+  const commands3 = [
+    {
+      name: "Github Repository",
+      desc: "Check out the code on GitHub",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 496 512"
+          fill="currentColor"
+          className="size-5"
+        >
+          <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z" />
+        </svg>
+      ),
+      onClick: () => {
+        handleLink("https://github.com/r4ultv/live-map");
+        setIsOpen(false);
+      },
+    },
+    {
+      name: "Blog Post",
+      desc: "Check out the blog post for more info about this project",
+      icon: <DocumentTextIcon className="size-5" />,
+      onClick: () => {
+        handleLink("https://www.raulcarini.dev/blog/live-map");
+        setIsOpen(false);
+      },
+    },
+  ];
 
   return (
     <Dialog
@@ -291,54 +321,9 @@ export default function CommandMenu({ requestInfo }) {
                         </div>
                       </Command.Item>
                     ))}
-
-                    <div className="w-full h-px bg-zinc-800 my-1"></div>
-
-                    <Command.Item
-                      onSelect={() =>
-                        handleLink("https://github.com/r4ultv/live-map")
-                      }
-                      className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
-                    >
-                      <div className="flex items-center gap-2 py-2 my-1 text-sm">
-                        <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 496 512"
-                            fill="currentColor"
-                            className="size-5"
-                          >
-                            <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z" />
-                          </svg>
-                        </div>
-                        <div className="flex flex-col">
-                          Github Repository
-                          <p className="text-xs text-zinc-500">
-                            Check out the code on GitHub
-                          </p>
-                        </div>
-                      </div>
-                    </Command.Item>
-                    <Command.Item
-                      onSelect={() =>
-                        handleLink("https://www.raulcarini.dev/blog/live-map")
-                      }
-                      className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
-                    >
-                      <div className="flex items-center gap-2 py-2 my-1 text-sm">
-                        <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
-                          <DocumentTextIcon className="size-5" />
-                        </div>
-                        <div className="flex flex-col">
-                          Blog Post
-                          <p className="text-xs text-zinc-500">
-                            Check out the blog post for more info about this
-                            project
-                          </p>
-                        </div>
-                      </div>
-                    </Command.Item>
                   </Command.Group>
+
+                  <div className="w-full h-0.5 bg-zinc-800 my-1"></div>
 
                   <Command.Group heading="Maps" label="Maps">
                     {commands2.map((command) => (
@@ -360,6 +345,44 @@ export default function CommandMenu({ requestInfo }) {
                         </div>
                         <div className="flex justify-center items-center gap-1.5 text-xs">
                           {command.shortct &&
+                            command.shortct.map((shortcut) => (
+                              <kbd
+                                key={shortcut}
+                                className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
+                              >
+                                {shortcut}
+                              </kbd>
+                            ))}
+                        </div>
+                      </Command.Item>
+                    ))}
+                  </Command.Group>
+
+                  <div className="w-full h-0.5 bg-zinc-800 my-1"></div>
+
+                  <Command.Group
+                    heading="More Information"
+                    label="More Information"
+                  >
+                    {commands3.map((command) => (
+                      <Command.Item
+                        key={command.name}
+                        onSelect={command.onClick}
+                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                      >
+                        <div className="flex items-center gap-2 py-2 my-1 text-sm">
+                          <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
+                            {command.icon}
+                          </div>
+                          <div className="flex flex-col">
+                            {command.name}
+                            <p className="text-xs text-zinc-500">
+                              {command?.desc}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center gap-1.5 text-xs">
+                          {command.shortcut &&
                             command.shortct.map((shortcut) => (
                               <kbd
                                 key={shortcut}
