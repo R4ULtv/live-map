@@ -3,8 +3,8 @@ import { GeistSans } from "geist/font/sans";
 import { CommandMenuProvider } from "@/components/providers/CommandMenuContext";
 
 export const metadata = {
-  title: "Live Map - A World Map of Countries",
-  description: "A world map of countries and update for each request.",
+  title: "Live Map - Simple World Map",
+  description: "A world map with stats and general information for each country.",
 };
 
 export default function RootLayout({ children }) {
