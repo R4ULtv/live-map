@@ -48,7 +48,7 @@ export default async function Home({ searchParams }) {
         max={max}
         requestInfo={requestInfo}
       />
-      <Navigation />
+      <Navigation fetchURL={process.env.WORKER_URL} />
       <CommandMenu requestInfo={requestInfo} />
     </GraphicsQualityProvider>
   );

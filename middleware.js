@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { kv } from "@vercel/kv";
 
 export const config = {
   matcher: "/",
@@ -16,31 +15,31 @@ export async function middleware(request) {
     region: geo.region || "CA",
     latitude: geo.latitude || "37.7749",
     longitude: geo.longitude || "-122.4194",
-    requestID: session || crypto.randomUUID(),
   };
+  const requestID = session || crypto.randomUUID();
 
   url.searchParams.set("country", user.country);
   url.searchParams.set("city", user.city);
   url.searchParams.set("region", user.region);
   url.searchParams.set("latitude", user.latitude);
   url.searchParams.set("longitude", user.longitude);
-  url.searchParams.set("requestID", user.requestID);
+  url.searchParams.set("requestID", requestID);
 
-  await kv.set(
-    `@live-map:online:${user.requestID}`,
-    {
-      country: user.country,
-      city: user.city,
-      region: user.region,
-      latitude: user.latitude,
-      longitude: user.longitude,
-    },
-    { ex: 60 }
-  );
+  try {
+    await fetch(process.env.WORKER_URL + "/add-location", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ requestID, location: user }),
+    });
+  } catch (error) {
+    console.error(error);
+  }
 
   if (!session) {
     const response = NextResponse.next();
-    response.cookies.set("session", user.requestID, {
+    response.cookies.set("session", requestID, {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
     });
