@@ -1,0 +1,13 @@
+{
+  "name": "online-users",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "hono": "^4.6.2"
+  },
+  "devDependencies": {
+    "wrangler": "^3.57.2"
+  }
+}

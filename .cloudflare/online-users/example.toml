@@ -1,0 +1,10 @@
+name = "online-users"
+main = "src/index.js"
+compatibility_date = "2024-09-09"
+compatibility_flags = [ "nodejs_compat" ]
+
+account_id = "<your-account-id>"
+
+[[ kv_namespaces ]]
+binding = "KV"
+id = "<your-kv-namespace-id>"
