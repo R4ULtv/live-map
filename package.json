@@ -12,7 +12,6 @@
     "@headlessui/react": "^2.1.8",
     "@heroicons/react": "^2.1.5",
     "@radix-ui/react-tooltip": "^1.1.2",
-    "@vercel/kv": "^2.0.0",
     "cmdk": "^1.0.0",
     "countries-list": "^3.1.1",
     "d3-scale": "^4.0.2",
