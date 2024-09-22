@@ -62,15 +62,19 @@ const FPSCounter = () => {
   };
 
   return (
-    <div className="absolute top-2 right-2 flex flex-col items-center justify-center gap-1 z-50">
+    <div className="absolute top-3 right-3 flex flex-col items-center justify-center gap-1 z-50">
       <div className="rounded-2xl border border-zinc-700 bg-zinc-900 text-zinc-200 shadow p-1 select-none">
         <div className="flex items-center justify-center gap-1 w-full">
-          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-sm text-zinc-200">
-            FPS: <span className={getFPSColor(fps)}>{fps}</span>
+          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-xs text-zinc-200">
+            Fps:{" "}
+            <span className={"font-semibold " + getFPSColor(fps)}>{fps}</span>
           </div>
           <div className="w-px h-5 bg-zinc-700"></div>
-          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-sm text-zinc-200">
-            Avg FPS: <span className={getFPSColor(avgFps)}>{avgFps}</span>
+          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-xs text-zinc-200">
+            Avg Fps:{" "}
+            <span className={"font-semibold " + getFPSColor(avgFps)}>
+              {avgFps}
+            </span>
           </div>
         </div>
         <div className="w-full h-px bg-zinc-700 mt-1 mb-2"></div>
@@ -146,7 +150,7 @@ export default function WorldMap({ geoData, min, max, requestInfo }) {
   return (
     <div className="relative w-screen h-screen">
       {hoverCountry !== null && (
-        <div className="absolute top-5 left-0 right-0 flex items-center justify-center z-50">
+        <div className="absolute top-3 left-0 right-0 flex items-center justify-center z-50">
           <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
             <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1.5">
               <img
