@@ -1,26 +1,41 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { env } from "hono/adapter";
 
 const app = new Hono();
 
-app.use('*', cors()); // Enable CORS for all routes
+app.use(
+  "*",
+  cors(
+    cors({
+      origin: "https://maps.raulcarini.dev",
+      allowMethods: ["GET", "POST"],
+      allowHeaders: ["Content-Type"],
+    })
+  )
+);
 
 app.get("/", (c) => c.text("Simple API build with Hono"));
 
 app.get("/online-count", async (c) => {
-  const kv = c.env.KV;
-  const { keys: onlineUsers } = await kv.list({ prefix: "@live-map:online:" });
-  return c.json({ count: onlineUsers.length });
+  let time = performance.now();
+  const { KV } = env(c);
+  const { keys: onlineUsers } = await KV.list({ prefix: "@live-map:online:" });
+  return c.json({
+    count: onlineUsers.length,
+    performance: performance.now() - time,
+  });
 });
 
 app.get("/online-locations", async (c) => {
-  const kv = c.env.KV;
-  const { keys: onlineUsers } = await kv.list({ prefix: "@live-map:online:" });
+  let time = performance.now();
+  const { KV } = env(c);
+  const { keys: onlineUsers } = await KV.list({ prefix: "@live-map:online:" });
 
   // Fetch locations for each online user
   const locations = await Promise.all(
     onlineUsers.map(async (user) => {
-      const location = await kv.get(user.name);
+      const location = await KV.get(user.name);
       return location ? JSON.parse(location) : null;
     })
   );
@@ -29,20 +44,27 @@ app.get("/online-locations", async (c) => {
     (unique, item) => (unique.includes(item) ? unique : [...unique, item]),
     []
   );
-  return c.json(uniqueLocations);
+  
+  return c.json({
+    performance: performance.now() - time,
+    count: uniqueLocations.length,
+    locations: uniqueLocations,
+  });
 });
 
 app.post("/add-location", async (c) => {
-  const kv = c.env.KV;
+  let time = performance.now();
+  const { KV } = env(c);
   const { requestID, location } = await c.req.json();
 
   // Store the user's location in the KV store
-  await kv.put(`@live-map:online:${requestID}`, JSON.stringify(location), {
+  await KV.put(`@live-map:online:${requestID}`, JSON.stringify(location), {
     expirationTtl: 60,
   });
 
   return c.json({
     message: "User added successfully",
+    performance: performance.now() - time,
     requestID: { requestID },
   });
 });
