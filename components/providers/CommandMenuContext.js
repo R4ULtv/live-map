@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 const CommandMenuContext = createContext();
 
@@ -10,9 +10,28 @@ export function CommandMenuProvider({ children }) {
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [isShowFps, setIsShowFps] = useState(false);
+  const [position, setPosition] = useState(null);
+
+  useEffect(() => {
+    const storedPosition = localStorage.getItem("nav-position");
+    if (storedPosition) {
+      setPosition(storedPosition);
+    } else {
+      localStorage.setItem("nav-position", "bottom");
+      setPosition("bottom");
+    }
+  }, []);
 
   const toggleFps = () => {
     setIsShowFps((prev) => !prev);
+  };
+
+  const rotatePosition = () => {
+    setPosition((prev) => {
+      const newPosition = prev === "bottom" ? "left" : "bottom";
+      localStorage.setItem("nav-position", newPosition);
+      return newPosition;
+    });
   };
 
   return (
@@ -28,6 +47,8 @@ export function CommandMenuProvider({ children }) {
         setSelectedCountry,
         isShowFps,
         toggleFps,
+        position,
+        rotatePosition,
       }}
     >
       {children}

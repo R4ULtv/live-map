@@ -17,6 +17,8 @@ import {
   MapPinIcon,
   DocumentTextIcon,
   Bars3BottomRightIcon,
+  FlagIcon,
+  CursorArrowRippleIcon,
 } from "@heroicons/react/24/outline";
 
 import { Command } from "cmdk";
@@ -39,6 +41,7 @@ export default function CommandMenu({ requestInfo }) {
     setSelectedCountry,
     isShowFps,
     toggleFps,
+    rotatePosition
   } = useCommandMenu();
   const { isHighQuality, toggleQuality } = useGraphicsQuality();
 
@@ -95,6 +98,10 @@ export default function CommandMenu({ requestInfo }) {
         e.preventDefault();
         toggleFps();
         setIsOpen(false);
+      } else if (e.altKey && e.key === "n") {
+        e.preventDefault();
+        setIsOpen(false);
+        rotatePosition()
       }
     },
     [isOpen, isCountrySearchOpen, isRequestInfoOpen, selectedCountry]
@@ -137,6 +144,16 @@ export default function CommandMenu({ requestInfo }) {
         setIsCountrySearchOpen(true);
         setIsOpen(false);
         setIsRequestInfoOpen(false);
+      },
+    },
+    {
+      name: "Change Navigation Position",
+      desc: "You can change the position of the floating navigation menu",
+      icon: <CursorArrowRippleIcon className="size-5" />,
+      shortct: ["⌥", "N"],
+      onClick: () => {
+        setIsOpen(false);
+        rotatePosition()
       },
     },
   ];
@@ -195,6 +212,15 @@ export default function CommandMenu({ requestInfo }) {
       ),
       onClick: () => {
         handleLink("https://github.com/r4ultv/live-map");
+        setIsOpen(false);
+      },
+    },
+    {
+      name: "Bug Report",
+      desc: "You found a bug? You can report it here",
+      icon: <FlagIcon className="size-5" />,
+      onClick: () => {
+        handleLink("https://github.com/R4ULtv/live-map/issues/new/choose");
         setIsOpen(false);
       },
     },
