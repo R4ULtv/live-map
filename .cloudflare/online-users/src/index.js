@@ -36,7 +36,8 @@ app.get("/online-locations", async (c) => {
   const locations = await Promise.all(
     onlineUsers.map(async (user) => {
       const location = await KV.get(user.name);
-      return location ? JSON.parse(location) : null;
+      if (!location) return null;
+      return JSON.parse(location);
     })
   );
 
