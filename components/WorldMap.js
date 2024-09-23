@@ -195,7 +195,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
                 location.longitude !== requestInfo.longitude ||
                 location.latitude !== requestInfo.latitude
             )
-            .filter(location => location !== null)
+            .filter(location => location !== null && location.longitude !== undefined && location.latitude !== undefined)
             .map((location, index) => (
               <Marker
                 key={index}
