@@ -33,11 +33,7 @@ export default function Navigation({ fetchURL }) {
           cache: "no-store",
         });
         const data = await response.json();
-        if (data.count > 0) {
-          setOnlineUsers(data.count);
-        } else {
-          setOnlineUsers(1);
-        }
+        setOnlineUsers(data.count);
       } catch (error) {
         setOnlineUsers(0);
         console.error(error);
@@ -160,6 +156,11 @@ export default function Navigation({ fetchURL }) {
               <TooltipTrigger asChild>
                 <Button className="p-2 data-[hover]:bg-zinc-800 data-[focus]:bg-zinc-800 transition-colors duration-75 rounded-full outline-none relative group">
                   <UsersIcon className="size-4 group-data-[hover]:scale-110 group-data-[focus]:scale-110 duration-75" />
+                  {onlineUsers > 0 ? (
+                    <div className="size-1.5 absolute top-1 right-1 bg-emerald-500/75 rounded-full" />
+                  ) : (
+                    <div className="size-1.5 absolute top-1 right-1 bg-rose-500/75 rounded-full" />
+                  )}
                 </Button>
               </TooltipTrigger>
               <TooltipContent side={position === "left" ? "right" : "top"}>
