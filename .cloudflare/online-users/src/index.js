@@ -41,7 +41,7 @@ app.get("/online-locations", async (c) => {
     })
   );
 
-  const uniqueLocations = locations.reduce(
+  const uniqueLocations = locations.filter(location => location !== null).reduce(
     (unique, item) => (unique.includes(item) ? unique : [...unique, item]),
     []
   );
