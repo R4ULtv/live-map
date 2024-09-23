@@ -47,6 +47,7 @@ export default async function Home({ searchParams }) {
         min={min}
         max={max}
         requestInfo={requestInfo}
+        fetchURL={process.env.WORKER_URL}
       />
       <Navigation fetchURL={process.env.WORKER_URL} />
       <CommandMenu requestInfo={requestInfo} />
