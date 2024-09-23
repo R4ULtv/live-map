@@ -300,7 +300,7 @@ export default function CommandMenu({ requestInfo }) {
                       <div className="flex items-center gap-2 py-2 my-1 text-sm">
                         <img
                           className="w-5 h-auto rounded-sm"
-                          src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${item.code}.svg`}
+                          src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${item.code}.svg`}
                           loading="lazy"
                         />
                         {item.name} ({item.code})

@@ -115,7 +115,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
             <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1.5">
               <img
                 className="w-5 h-auto rounded-sm"
-                src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${hoverCountry}.svg`}
+                src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${hoverCountry}.svg`}
                 loading="lazy"
               />
               <span className="text-zinc-200 text-sm">
