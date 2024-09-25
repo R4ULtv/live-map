@@ -10,15 +10,15 @@ export function CommandMenuProvider({ children }) {
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [isShowFps, setIsShowFps] = useState(false);
-  const [position, setPosition] = useState(null);
+  const [navPosition, setNavPosition] = useState(null);
 
   useEffect(() => {
     const storedPosition = localStorage.getItem("nav-position");
     if (storedPosition) {
-      setPosition(storedPosition);
+      setNavPosition(storedPosition);
     } else {
       localStorage.setItem("nav-position", "bottom");
-      setPosition("bottom");
+      setNavPosition("bottom");
     }
   }, []);
 
@@ -26,9 +26,25 @@ export function CommandMenuProvider({ children }) {
     setIsShowFps((prev) => !prev);
   };
 
-  const rotatePosition = () => {
-    setPosition((prev) => {
-      const newPosition = prev === "bottom" ? "left" : "bottom";
+  const rotateNavPosition = () => {
+    setNavPosition((prev) => {
+      let newPosition;
+      switch (prev) {
+        case "bottom":
+          newPosition = "left";
+          break;
+        case "left":
+          newPosition = "top";
+          break;
+        case "right":
+          newPosition = "bottom";
+          break;
+        case "top":
+          newPosition = "right";
+          break;
+        default:
+          newPosition = "bottom";
+      }
       localStorage.setItem("nav-position", newPosition);
       return newPosition;
     });
@@ -47,8 +63,8 @@ export function CommandMenuProvider({ children }) {
         setSelectedCountry,
         isShowFps,
         toggleFps,
-        position,
-        rotatePosition,
+        navPosition,
+        rotateNavPosition,
       }}
     >
       {children}
