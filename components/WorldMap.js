@@ -110,7 +110,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
   return (
     <div className="relative w-screen h-screen">
       {hoverCountry !== null && (
-        <div className="absolute top-3 left-0 right-0 flex items-center justify-center z-50">
+        <div className="absolute top-3 left-1/2 -translate-x-1/2">
           <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
             <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1.5">
               <img

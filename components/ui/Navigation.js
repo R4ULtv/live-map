@@ -51,8 +51,8 @@ export default function Navigation({ fetchURL }) {
       <Transition show={position}>
         <div
           className={
-            "absolute flex items-center justify-center transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-50 " +
-            (position === "left" ? "left-3 inset-y-0" : "inset-x-0 bottom-3")
+            "absolute transform w-min transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-50 " +
+            (position === "left" ? "left-3 top-1/2 -translate-y-1/2" : "bottom-3 left-1/2 -translate-x-1/2")
           }
         >
           <div
