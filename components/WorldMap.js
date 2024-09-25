@@ -23,7 +23,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
   const [locations, setLocations] = useState([]);
 
   const { isHighQuality } = useGraphicsQuality();
-  const { setSelectedCountry, setIsRequestInfoOpen, isShowFps } =
+  const { setSelectedCountry, setIsRequestInfoOpen, isShowFps, navPosition } =
     useCommandMenu();
 
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1.2 });
@@ -110,7 +110,12 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
   return (
     <div className="relative w-screen h-screen">
       {hoverCountry !== null && (
-        <div className="absolute top-3 left-1/2 -translate-x-1/2">
+        <div
+          className={
+            "absolute left-1/2 -translate-x-1/2 " +
+            (navPosition === "top" ? "bottom-3" : "top-3")
+          }
+        >
           <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
             <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1.5">
               <img
@@ -195,7 +200,12 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
                 location.longitude !== requestInfo.longitude ||
                 location.latitude !== requestInfo.latitude
             )
-            .filter(location => location !== null && location.longitude !== undefined && location.latitude !== undefined)
+            .filter(
+              (location) =>
+                location !== null &&
+                location.longitude !== undefined &&
+                location.latitude !== undefined
+            )
             .map((location, index) => (
               <Marker
                 key={index}
