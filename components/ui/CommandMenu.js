@@ -41,7 +41,7 @@ export default function CommandMenu({ requestInfo }) {
     setSelectedCountry,
     isShowFps,
     toggleFps,
-    rotatePosition
+    rotateNavPosition,
   } = useCommandMenu();
   const { isHighQuality, toggleQuality } = useGraphicsQuality();
 
@@ -101,7 +101,7 @@ export default function CommandMenu({ requestInfo }) {
       } else if (e.altKey && e.key === "n") {
         e.preventDefault();
         setIsOpen(false);
-        rotatePosition()
+        rotateNavPosition();
       }
     },
     [isOpen, isCountrySearchOpen, isRequestInfoOpen, selectedCountry]
@@ -153,7 +153,7 @@ export default function CommandMenu({ requestInfo }) {
       shortct: ["⌥", "N"],
       onClick: () => {
         setIsOpen(false);
-        rotatePosition()
+        rotateNavPosition();
       },
     },
   ];
