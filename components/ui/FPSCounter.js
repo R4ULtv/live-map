@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import { useCallback, useEffect, useState } from "react";
 import {
   Line,
@@ -49,34 +50,35 @@ export const FPSCounter = () => {
   }, [updateFPS]);
 
   const getFPSColor = (fps) => {
-    if (fps >= 60) return "text-emerald-400";
-    if (fps >= 30) return "text-amber-400";
-    return "text-rose-400";
+    if (fps >= 60) return "text-emerald-500";
+    if (fps >= 30) return "text-amber-500";
+    return "text-rose-500";
   };
 
   return (
     <div className="absolute top-3 right-3 flex flex-col items-center justify-center gap-1 z-50">
-      <div className="rounded-2xl border border-zinc-700 bg-zinc-900 text-zinc-200 shadow p-1 select-none">
+      <div className="rounded-2xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow p-1 select-none">
         <div className="flex items-center justify-center gap-1 w-full">
-          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-xs text-zinc-200">
+          <div className="py-1 px-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-xl outline-none text-xs">
             Fps:{" "}
             <span className={"font-semibold " + getFPSColor(fps)}>{fps}</span>
           </div>
-          <div className="w-px h-5 bg-zinc-700"></div>
-          <div className="py-1 px-2 hover:bg-zinc-800 rounded-xl outline-none text-xs text-zinc-200">
+          <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700" />
+          <div className="py-1 px-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-xl outline-none text-xs">
             Avg Fps:{" "}
             <span className={"font-semibold " + getFPSColor(avgFps)}>
               {avgFps}
             </span>
           </div>
         </div>
-        <div className="w-full h-px bg-zinc-700 mt-1 mb-2"></div>
+        <div className="w-full h-px bg-zinc-300 dark:bg-zinc-700 mt-1 mb-2" />
         <FPSChart data={historyFps} />
       </div>
     </div>
   );
 };
 function FPSChart({ data }) {
+  const { theme } = useTheme();
   const fpsData = data.map((d) => d.fps);
   const minFPS = Math.min(...fpsData);
   const maxFPS = Math.max(...fpsData);
@@ -98,26 +100,38 @@ function FPSChart({ data }) {
           />
           <ReferenceLine
             y={30}
-            stroke="rgb(228 228 231 / 0.5)"
+            stroke={
+              theme === "dark"
+                ? "rgb(228 228 231 / 0.5)"
+                : "rgb(39 39 42 / 0.5)"
+            }
             strokeDasharray="3 3"
           />
           <ReferenceLine
             y={60}
-            stroke="rgb(228 228 231 / 0.5)"
+            stroke={
+              theme === "dark"
+                ? "rgb(228 228 231 / 0.5)"
+                : "rgb(39 39 42 / 0.5)"
+            }
             strokeDasharray="3 3"
           />
 
           {maxFPS > 60 && (
             <ReferenceLine
               y={maxFPS}
-              stroke="rgb(228 228 231 / 0.5)"
+              stroke={
+                theme === "dark"
+                  ? "rgb(228 228 231 / 0.5)"
+                  : "rgb(39 39 42 / 0.5)"
+              }
               strokeDasharray="3 3"
             />
           )}
           <Line
             type="monotone"
             dataKey="fps"
-            stroke="#e4e4e7"
+            stroke={theme === "dark" ? "#e4e4e7" : "#27272a"}
             strokeWidth={2}
             dot={false}
             isAnimationActive={false}
