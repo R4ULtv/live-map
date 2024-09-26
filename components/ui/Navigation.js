@@ -25,6 +25,7 @@ export default function Navigation({ fetchURL }) {
     setIsCountrySearchOpen,
     setIsRequestInfoOpen,
     navPosition,
+    isShowNav,
   } = useCommandMenu();
   const [onlineUsers, setOnlineUsers] = useState(0);
 
@@ -119,7 +120,7 @@ export default function Navigation({ fetchURL }) {
 
   return (
     <TooltipProvider>
-      <Transition show={!!navPosition}>
+      <Transition show={!!isShowNav}>
         <div
           className={
             "absolute transform w-min transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-50 " +

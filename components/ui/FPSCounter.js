@@ -13,7 +13,7 @@ import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { Transition } from "@headlessui/react";
 
 export const FPSCounter = () => {
-  const { isShowFps } = useCommandMenu();
+  const { isShowFps, fpsPosition } = useCommandMenu();
   const [fps, setFps] = useState(0);
   const [avgFps, setAvgFps] = useState(0);
   const [historyFps, setHistoryFps] = useState([]);
@@ -60,22 +60,33 @@ export const FPSCounter = () => {
 
   return (
     <Transition show={!!isShowFps}>
-      <div className="absolute top-3 right-3 transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-50">
+      <div
+        className={`absolute transform transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-50
+          ${
+            fpsPosition === "bottom-right"
+              ? "bottom-3 right-3"
+              : fpsPosition === "bottom-left"
+              ? "bottom-3 left-3"
+              : fpsPosition === "top-left"
+              ? "top-3 left-3"
+              : "top-3 right-3"
+          }`}
+      >
         <div className="rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow p-1 select-none">
           <div className="flex items-center justify-center gap-1 w-full">
-            <div className="py-1 px-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-xl outline-none text-xs">
+            <div className="py-1 px-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-lg outline-none text-xs">
               Fps:{" "}
               <span className={"font-semibold " + getFPSColor(fps)}>{fps}</span>
             </div>
             <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700" />
-            <div className="py-1 px-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-xl outline-none text-xs">
+            <div className="py-1 px-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-lg outline-none text-xs">
               Avg Fps:{" "}
               <span className={"font-semibold " + getFPSColor(avgFps)}>
                 {avgFps}
               </span>
             </div>
           </div>
-          <div className="w-full h-px bg-zinc-300 dark:bg-zinc-700 mt-1 mb-2" />
+          <div className="w-full h-px bg-zinc-300 dark:bg-zinc-700 my-1" />
           <FPSChart data={historyFps} />
         </div>
       </div>
@@ -90,7 +101,7 @@ function FPSChart({ data }) {
   const maxFPS = Math.max(...fpsData);
 
   return (
-    <div className="w-full h-16">
+    <div className="w-full h-16 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-lg p-1">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <YAxis

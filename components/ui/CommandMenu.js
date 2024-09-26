@@ -22,6 +22,7 @@ import {
   CursorArrowRippleIcon,
   SunIcon,
   MoonIcon,
+  WrenchIcon,
 } from "@heroicons/react/24/outline";
 
 import { Command } from "cmdk";
@@ -46,6 +47,9 @@ export default function CommandMenu({ requestInfo }) {
     isShowFps,
     toggleFps,
     rotateNavPosition,
+    rotateFpsPosition,
+    isShowNav,
+    toggleNav,
   } = useCommandMenu();
   const { isHighQuality, toggleQuality } = useGraphicsQuality();
   const { theme, setTheme } = useTheme();
@@ -63,14 +67,14 @@ export default function CommandMenu({ requestInfo }) {
         e.preventDefault();
         setInputValue(""); // Clear the input field
         if (isCountrySearchOpen || isRequestInfoOpen) {
+          setIsOpen(true);
           setIsCountrySearchOpen(false);
           setIsRequestInfoOpen(false);
-          setIsOpen(true);
         } else if (selectedCountry !== null) {
+          setIsOpen(false);
           setIsCountrySearchOpen(true);
           setSelectedCountry(null);
           setIsRequestInfoOpen(false);
-          setIsOpen(false);
         } else {
           setIsOpen(false);
         }
@@ -83,26 +87,34 @@ export default function CommandMenu({ requestInfo }) {
         setInputValue("");
       } else if (e.ctrlKey && e.key === "f") {
         e.preventDefault();
-        setIsCountrySearchOpen(!isCountrySearchOpen);
         setIsOpen(false);
+        setIsCountrySearchOpen(!isCountrySearchOpen);
         setIsRequestInfoOpen(false);
         setSelectedCountry(null);
         setInputValue("");
       } else if (e.ctrlKey && e.key === "g") {
         e.preventDefault();
-        setIsRequestInfoOpen(!isRequestInfoOpen);
         setIsOpen(false);
+        setIsRequestInfoOpen(!isRequestInfoOpen);
         setIsCountrySearchOpen(false);
         setSelectedCountry(null);
         setInputValue("");
       } else if (e.ctrlKey && e.key === "q") {
         e.preventDefault();
-        toggleQuality();
         setIsOpen(false);
+        toggleQuality();
       } else if (e.ctrlKey && e.shiftKey && e.key === "P") {
         e.preventDefault();
         toggleFps();
         setIsOpen(false);
+      } else if (e.altKey && e.key === "p") {
+        e.preventDefault();
+        setIsOpen(false);
+        rotateFpsPosition();
+      } else if (e.ctrlKey && e.shiftKey && e.key === "N") {
+        e.preventDefault();
+        setIsOpen(false);
+        toggleNav();
       } else if (e.altKey && e.key === "n") {
         e.preventDefault();
         setIsOpen(false);
@@ -137,7 +149,7 @@ export default function CommandMenu({ requestInfo }) {
       name: "Request Geolocation Data",
       desc: "Watch your geolocation data get from your request",
       icon: <UserIcon className="size-5" />,
-      shortct: ["⌘", "G"],
+      shortcut: ["⌘", "G"],
       onClick: () => {
         setIsRequestInfoOpen(true);
         setIsOpen(false);
@@ -148,7 +160,7 @@ export default function CommandMenu({ requestInfo }) {
       name: "Search for a Country",
       desc: "Find a country by name or code and watch its data",
       icon: <MagnifyingGlassIcon className="size-5" />,
-      shortct: ["⌘", "F"],
+      shortcut: ["⌘", "F"],
       onClick: () => {
         setIsCountrySearchOpen(true);
         setIsOpen(false);
@@ -156,10 +168,20 @@ export default function CommandMenu({ requestInfo }) {
       },
     },
     {
-      name: "Change Navigation Position",
-      desc: "You can change the position of the floating navigation menu",
+      name: `${isShowNav ? "Hide" : "Show"} Toolbar`,
+      desc: "You can hide or show the floating toolbar",
+      icon: <WrenchIcon className="size-5" />,
+      shortcut: ["⌘", "⇧", "N"],
+      onClick: () => {
+        setIsOpen(false);
+        toggleNav();
+      },
+    },
+    {
+      name: "Change Toolbar Position",
+      desc: "You can change the position of the floating toolbar",
       icon: <CursorArrowRippleIcon className="size-5" />,
-      shortct: ["⌥", "N"],
+      shortcut: ["⌥", "N"],
       onClick: () => {
         setIsOpen(false);
         rotateNavPosition();
@@ -174,7 +196,7 @@ export default function CommandMenu({ requestInfo }) {
         ) : (
           <MoonIcon className="size-5" />
         ),
-      shortct: ["⌘", "⇧", "L"],
+      shortcut: ["⌘", "⇧", "L"],
       onClick: () => {
         setIsOpen(false);
         setTheme(theme === "dark" ? "light" : "dark");
@@ -189,7 +211,7 @@ export default function CommandMenu({ requestInfo }) {
         ? "Switch to lower quality for better performance"
         : "The performance may be significantly lower",
       icon: <AdjustmentsHorizontalIcon className="size-5" />,
-      shortct: ["⌘", "Q"],
+      shortcut: ["⌘", "Q"],
       onClick: () => {
         toggleQuality();
         setIsOpen(false);
@@ -201,17 +223,27 @@ export default function CommandMenu({ requestInfo }) {
         ? "Hide your FPS stats, better performance"
         : "Watch your performance FPS, may can cause lag",
       icon: <Bars3BottomRightIcon className="size-5" />,
-      shortct: ["⌘", "⇧", "P"],
+      shortcut: ["⌘", "⇧", "P"],
       onClick: () => {
         toggleFps();
         setIsOpen(false);
       },
     },
     {
+      name: "Change FPS Stats Position",
+      desc: "You can change the position of the fps stats",
+      icon: <CursorArrowRippleIcon className="size-5" />,
+      shortcut: ["⌥", "P"],
+      onClick: () => {
+        setIsOpen(false);
+        rotateFpsPosition();
+      },
+    },
+    {
       name: "Reset the Map",
       desc: "Reset the map to the default position",
       icon: <MapIcon className="size-5" />,
-      shortct: ["⌘", "R"],
+      shortcut: ["⌘", "R"],
     },
     {
       name: "Select a Country",
@@ -360,7 +392,7 @@ export default function CommandMenu({ requestInfo }) {
                           </div>
                         </div>
                         <div className="flex justify-center items-center gap-1.5 text-xs">
-                          {command.shortct.map((shortcut) => (
+                          {command.shortcut.map((shortcut) => (
                             <kbd
                               key={shortcut}
                               className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
@@ -394,8 +426,8 @@ export default function CommandMenu({ requestInfo }) {
                           </div>
                         </div>
                         <div className="flex justify-center items-center gap-1.5 text-xs">
-                          {command.shortct &&
-                            command.shortct.map((shortcut) => (
+                          {command.shortcut &&
+                            command.shortcut.map((shortcut) => (
                               <kbd
                                 key={shortcut}
                                 className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
@@ -433,7 +465,7 @@ export default function CommandMenu({ requestInfo }) {
                         </div>
                         <div className="flex justify-center items-center gap-1.5 text-xs">
                           {command.shortcut &&
-                            command.shortct.map((shortcut) => (
+                            command.shortcut.map((shortcut) => (
                               <kbd
                                 key={shortcut}
                                 className="px-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md min-w-[20px] h-5 flex justify-center items-center"
