@@ -42,7 +42,7 @@ export default function Navigation({ fetchURL }) {
 
     fetchOnlineCount();
 
-    const interval = setInterval(fetchOnlineCount, 30000);
+    const interval = setInterval(fetchOnlineCount, 60000); // revalidate every 60s
     return () => clearInterval(interval);
   }, []);
 

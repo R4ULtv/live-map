@@ -72,7 +72,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
 
     fetchOnlineLocations();
 
-    const interval = setInterval(fetchOnlineLocations, 30000);
+    const interval = setInterval(fetchOnlineLocations, 60000); // revalidate every 60s
     return () => clearInterval(interval);
   }, []);
 
