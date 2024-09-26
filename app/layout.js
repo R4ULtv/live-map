@@ -4,9 +4,23 @@ import { CommandMenuProvider } from "@/components/providers/CommandMenuContext";
 import { ThemeProvider } from "next-themes";
 
 export const metadata = {
+  metadataBase: process.env.HOST_NAME,
   title: "Live Map - Simple World Map",
   description:
     "A world map with stats and general information for each country.",
+  openGraph: {
+    title: "Live Map - Simple World Map",
+    description:
+      "A world map with stats and general information for each country.",
+    url: process.env.HOST_NAME,
+    images: [
+      {
+        url: `https://www.raulcarini.dev/api/dynamic-og?title=Live%20Map&description=A%20world%20map%20with%20stats%20and%20general%20information%20for%20each%20country.`,
+        width: 843,
+        height: 441,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {
