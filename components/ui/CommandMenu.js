@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Button,
   Dialog,
   DialogBackdrop,
   DialogPanel,
@@ -278,7 +279,7 @@ export default function CommandMenu({ requestInfo }) {
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
         <DialogPanel
           transition
-          className="max-w-xl w-full border overflow-y-auto bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 rounded-xl transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-90"
+          className="max-w-xl w-full border overflow-y-auto bg-zinc-100 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 rounded-xl transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-90"
         >
           <Command
             label={
@@ -291,7 +292,7 @@ export default function CommandMenu({ requestInfo }) {
               <Command.Input
                 value={inputValue}
                 onValueChange={setInputValue}
-                className="w-full text-sm bg-transparent font-semibold outline-none py-3 px-4 border-b-2 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-700 dark:placeholder:text-zinc-300"
+                className="w-full text-sm bg-transparent font-semibold outline-none py-3 px-4 border-b-2 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 placeholder:text-zinc-600 dark:placeholder:text-zinc-400"
                 placeholder={
                   isCountrySearchOpen
                     ? "Search for a country..."
@@ -302,7 +303,7 @@ export default function CommandMenu({ requestInfo }) {
               />
             )}
 
-            <Command.List className="overflow-y-auto pb-2 max-h-96 [&_div[cmdk-group]]:px-2 [&_div[cmdk-group-heading]]:my-1 [&_div[cmdk-group-heading]]:text-sm [&_div[cmdk-group-heading]]:font-semibold [&_div[cmdk-group-heading]]:text-zinc-400">
+            <Command.List className="overflow-y-auto pb-2 max-h-96 [&_div[cmdk-group]]:px-2 [&_div[cmdk-group-heading]]:my-1 [&_div[cmdk-group-heading]]:text-sm [&_div[cmdk-group-heading]]:font-semibold [&_div[cmdk-group-heading]]:text-zinc-600 dark:[&_div[cmdk-group-heading]]:text-zinc-400">
               {!isRequestInfoOpen && selectedCountry === null && (
                 <Command.Empty className="py-2 ml-3 my-1 text-sm text-zinc-500">
                   No results found.
@@ -318,7 +319,7 @@ export default function CommandMenu({ requestInfo }) {
                         setSelectedCountry(item.code);
                         setIsCountrySearchOpen(false);
                       }}
-                      className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                      className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-900 dark:text-zinc-100 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
                     >
                       <div className="flex items-center gap-2 py-2 my-1 text-sm">
                         <img
@@ -345,7 +346,7 @@ export default function CommandMenu({ requestInfo }) {
                       <Command.Item
                         key={command.name}
                         onSelect={command.onClick}
-                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-900 dark:text-zinc-100 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
                       >
                         <div className="flex items-center gap-2 py-2 my-1 text-sm">
                           <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
@@ -372,14 +373,14 @@ export default function CommandMenu({ requestInfo }) {
                     ))}
                   </Command.Group>
 
-                  <div className="w-full h-0.5 bg-zinc-800 my-1"></div>
+                  <div className="w-full h-px bg-zinc-300 dark:bg-zinc-700 my-1"></div>
 
                   <Command.Group heading="Maps" label="Maps">
                     {commands2.map((command) => (
                       <Command.Item
                         key={command.name}
                         onSelect={command.onClick}
-                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-900 dark:text-zinc-100 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
                       >
                         <div className="flex items-center gap-2 py-2 my-1 text-sm">
                           <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
@@ -407,7 +408,7 @@ export default function CommandMenu({ requestInfo }) {
                     ))}
                   </Command.Group>
 
-                  <div className="w-full h-0.5 bg-zinc-800 my-1"></div>
+                  <div className="w-full h-px bg-zinc-300 dark:bg-zinc-700 my-1"></div>
 
                   <Command.Group
                     heading="More Information"
@@ -417,7 +418,7 @@ export default function CommandMenu({ requestInfo }) {
                       <Command.Item
                         key={command.name}
                         onSelect={command.onClick}
-                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-950 dark:text-zinc-50 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
+                        className="group flex justify-between items-center rounded-md px-2 cursor-pointer select-none text-zinc-900 dark:text-zinc-100 transition duration-150 data-[selected=true]:bg-zinc-800/5 dark:data-[selected=true]:bg-zinc-200/5"
                       >
                         <div className="flex items-center gap-2 py-2 my-1 text-sm">
                           <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500 rounded-md">
@@ -503,39 +504,39 @@ export default function CommandMenu({ requestInfo }) {
                     <MenuItems
                       transition
                       anchor="top end"
-                      className="min-w-32 origin-top-right outline-none p-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm transition duration-75 ease-in-out [--anchor-gap:4px] data-[closed]:scale-90 data-[closed]:opacity-0"
+                      className="min-w-32 origin-top-right outline-none p-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 text-sm transition duration-75 ease-in-out [--anchor-gap:4px] data-[closed]:scale-90 data-[closed]:opacity-0"
                     >
                       <MenuItem>
-                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                        <Button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
                           Move
                           <kbd className="ml-auto font-sans text-xs">
                             ↑ or ↓
                           </kbd>
-                        </button>
+                        </Button>
                       </MenuItem>
                       <MenuItem>
-                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                        <Button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
                           Return/Escape
                           <kbd className="ml-auto font-sans text-xs">esc</kbd>
-                        </button>
+                        </Button>
                       </MenuItem>
                       <MenuItem>
-                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                        <Button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
                           Open/Use
                           <kbd className="ml-auto font-sans text-xs">↵</kbd>
-                        </button>
+                        </Button>
                       </MenuItem>
                       <MenuItem>
-                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                        <Button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
                           Cycle
                           <kbd className="ml-auto font-sans text-xs">⇆</kbd>
-                        </button>
+                        </Button>
                       </MenuItem>
                       <MenuItem>
-                        <button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
+                        <Button className="group flex w-full items-center gap-4 rounded-md py-1.5 px-3 data-[focus]:bg-zinc-800/5 dark:data-[focus]:bg-zinc-200/5">
                           Cycle backwards
                           <kbd className="ml-auto font-sans text-xs">⇧ ⇆</kbd>
-                        </button>
+                        </Button>
                       </MenuItem>
                     </MenuItems>
                   </Menu>

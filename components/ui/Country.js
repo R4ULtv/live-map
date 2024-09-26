@@ -26,10 +26,10 @@ export default function CountryData({ requestInfo, countryCode }) {
   const CopyButton = ({ text, rawText }) => (
     <Button
       onClick={() => copyToClipboard(rawText ? rawText : text)}
-      className="hover:bg-zinc-700 focus:bg-zinc-700 px-2 rounded transition-colors outline-none"
+      className="hover:bg-zinc-300 dark:hover:bg-zinc-700 focus:bg-zinc-300 dark:focus:bg-zinc-700 px-2 rounded transition-colors outline-none"
     >
       {copiedText === text && (
-        <span className="mr-2 text-xs text-emerald-400">Copied!</span>
+        <span className="mr-2 text-xs text-emerald-500">Copied!</span>
       )}
       {text}
     </Button>
@@ -48,12 +48,12 @@ export default function CountryData({ requestInfo, countryCode }) {
           }
         />
       </div>
-      <TabList className="flex items-center justify-between px-2 border-b border-zinc-800 pb-2">
-        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-800 data-[selected]:bg-zinc-800 text-zinc-300 text-sm flex items-center gap-1 outline-none border border-zinc-800">
+      <TabList className="flex items-center justify-between px-2 border-b border-zinc-200 dark:border-zinc-800 pb-2">
+        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 data-[selected]:bg-zinc-200 dark:data-[selected]:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm flex items-center gap-1 outline-none border border-zinc-200 dark:border-zinc-800">
           <IdentificationIcon className="size-4" />
           General Information
         </Tab>
-        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-800 data-[selected]:bg-zinc-800 text-zinc-300 text-sm flex items-center gap-1 outline-none border border-zinc-800">
+        <Tab className="px-2 py-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 data-[selected]:bg-zinc-200 dark:data-[selected]:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm flex items-center gap-1 outline-none border border-zinc-200 dark:border-zinc-800">
           <ChartBarIcon className="size-4" />
           Statistics
         </Tab>
@@ -63,10 +63,10 @@ export default function CountryData({ requestInfo, countryCode }) {
           {requestInfo && (
             <>
               <div className="px-4">
-                <p className="text-zinc-400 font-semibold text-sm mb-1">
+                <p className="text-zinc-600 dark:text-zinc-400 font-semibold text-sm mb-1">
                   Request Data
                 </p>
-                <div className="space-y-2 text-zinc-300">
+                <div className="space-y-2 text-zinc-700 dark:text-zinc-300">
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold">Latitude</span>
@@ -78,7 +78,7 @@ export default function CountryData({ requestInfo, countryCode }) {
                     </div>
                   </div>
 
-                  <div className="bg-zinc-800 w-full h-px"></div>
+                  <div className="bg-zinc-200 dark:bg-zinc-800 w-full h-px"></div>
 
                   <div>
                     <div className="flex items-center justify-between">
@@ -95,7 +95,7 @@ export default function CountryData({ requestInfo, countryCode }) {
                     </div>
                   </div>
 
-                  <div className="bg-zinc-800 w-full h-px"></div>
+                  <div className="bg-zinc-200 dark:bg-zinc-800 w-full h-px"></div>
 
                   <div>
                     <div className="flex items-center justify-between">
@@ -112,14 +112,14 @@ export default function CountryData({ requestInfo, countryCode }) {
                   </div>
                 </div>
               </div>
-              <div className="bg-zinc-800 w-full h-0.5 rounded"></div>
+              <div className="bg-zinc-200 dark:bg-zinc-800 w-full h-0.5 rounded"></div>
             </>
           )}
           <div className="px-4">
-            <p className="text-zinc-400 font-semibold text-sm mb-1">
+            <p className="text-zinc-600 dark:text-zinc-400 font-semibold text-sm mb-1">
               Country General Information
             </p>
-            <div className="space-y-2 text-zinc-300">
+            <div className="space-y-2 text-zinc-700 dark:text-zinc-300">
               <div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Country</span>
@@ -153,7 +153,7 @@ export default function CountryData({ requestInfo, countryCode }) {
                 </div>
               </div>
 
-              <div className="bg-zinc-800 w-full h-px"></div>
+              <div className="bg-zinc-200 dark:bg-zinc-800 w-full h-px"></div>
 
               <div>
                 <div className="flex items-center justify-between">
@@ -169,11 +169,13 @@ export default function CountryData({ requestInfo, countryCode }) {
           </div>
         </TabPanel>
         <TabPanel className="space-y-2">
-          <div className="flex flex-col items-center justify-center gap-1 h-40 mx-2 border border-zinc-800 rounded-md border-dashed">
+          <div className="flex flex-col items-center justify-center gap-1 h-40 mx-2 border border-zinc-200 dark:border-zinc-800 rounded-md border-dashed">
             <div className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-500 rounded-md">
               <ChartBarIcon className="size-6" />
             </div>
-            <span className="text-zinc-300">Coming Soon</span>
+            <span className="text-zicn-700 dark:text-zinc-300">
+              Coming Soon
+            </span>
           </div>
         </TabPanel>
       </TabPanels>
