@@ -177,6 +177,11 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
           minZoom={1.2}
           maxZoom={5}
           onMoveEnd={(position) => setPosition(position)}
+          translateExtent={[
+            [120, 70],
+            [1800, 1030],
+          ]}
+          P
         >
           <Geographies
             geography={
