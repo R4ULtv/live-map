@@ -25,7 +25,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
   const [locations, setLocations] = useState([]);
 
   const { isHighQuality } = useGraphicsQuality();
-  const { setSelectedCountry, setIsRequestInfoOpen, isShowFps, navPosition } =
+  const { setSelectedCountry, setIsRequestInfoOpen, navPosition } =
     useCommandMenu();
 
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1.2 });
@@ -181,7 +181,6 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
             [120, 70],
             [1800, 1030],
           ]}
-          P
         >
           <Geographies
             geography={
@@ -241,7 +240,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
             ))}
         </ZoomableGroup>
       </ComposableMap>
-      {isShowFps && <FPSCounter />}
+      <FPSCounter />
     </div>
   );
 }
