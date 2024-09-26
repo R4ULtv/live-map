@@ -19,10 +19,9 @@ export default async function Home({ searchParams }) {
 
   const client = await clientPromise;
   const db = client.db("production");
-  if (requestInfo) {
-    const userLocation = await db
-      .collection("locations")
-      .insertOne({ ...requestInfo });
+  
+  if (process.env.NODE_ENV === "production" && requestInfo) {
+    await db.collection("locations").insertOne({ ...requestInfo });
   }
 
   const geoData = await db
