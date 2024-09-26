@@ -20,8 +20,12 @@ import { useEffect, useState } from "react";
 import numeral from "numeral";
 
 export default function Navigation({ fetchURL }) {
-  const { setIsOpen, setIsCountrySearchOpen, setIsRequestInfoOpen, navPosition } =
-    useCommandMenu();
+  const {
+    setIsOpen,
+    setIsCountrySearchOpen,
+    setIsRequestInfoOpen,
+    navPosition,
+  } = useCommandMenu();
   const [onlineUsers, setOnlineUsers] = useState(0);
 
   useEffect(() => {
@@ -130,7 +134,7 @@ export default function Navigation({ fetchURL }) {
         >
           <div
             className={
-              "rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1 " +
+              "rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow flex items-center gap-1 p-1 " +
               (navPosition === "left" || navPosition === "right"
                 ? "flex-col"
                 : "flex-row")
@@ -142,7 +146,7 @@ export default function Navigation({ fetchURL }) {
                   <TooltipTrigger asChild>
                     <Button
                       onClick={e.onClick}
-                      className="p-2 data-[hover]:bg-zinc-800 data-[focus]:bg-zinc-800 transition-colors duration-75 rounded-full outline-none relative group"
+                      className="p-2 data-[hover]:bg-zinc-200 dark:data-[hover]:bg-zinc-800 data-[focus]:bg-zinc-200 dark:data-[focus]:bg-zinc-800 transition-colors duration-75 rounded-full outline-none relative group"
                     >
                       {e.icon}
                     </Button>
@@ -164,7 +168,7 @@ export default function Navigation({ fetchURL }) {
                 {e.divedeAfter && (
                   <div
                     className={
-                      "bg-zinc-700 " +
+                      "bg-zinc-300 dark:bg-zinc-700 " +
                       (navPosition === "left" || navPosition === "right"
                         ? "h-px w-5"
                         : "w-px h-5")
