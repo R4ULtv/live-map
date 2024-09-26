@@ -19,6 +19,8 @@ import {
   Bars3BottomRightIcon,
   FlagIcon,
   CursorArrowRippleIcon,
+  SunIcon,
+  MoonIcon,
 } from "@heroicons/react/24/outline";
 
 import { Command } from "cmdk";
@@ -28,6 +30,7 @@ import jsonMap from "@/public/countries/countries-low.json";
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContext";
 import CountryData from "@/components/ui/Country";
+import { useTheme } from "next-themes";
 
 export default function CommandMenu({ requestInfo }) {
   const {
@@ -44,6 +47,7 @@ export default function CommandMenu({ requestInfo }) {
     rotateNavPosition,
   } = useCommandMenu();
   const { isHighQuality, toggleQuality } = useGraphicsQuality();
+  const { theme, setTheme } = useTheme();
 
   const countries = jsonMap.objects.countries1.geometries.map((country) => ({
     name: country.properties.name,
@@ -102,9 +106,13 @@ export default function CommandMenu({ requestInfo }) {
         e.preventDefault();
         setIsOpen(false);
         rotateNavPosition();
+      } else if (e.ctrlKey && e.shiftKey && e.key === "L") {
+        e.preventDefault();
+        setIsOpen(false);
+        setTheme(theme === "dark" ? "light" : "dark");
       }
     },
-    [isOpen, isCountrySearchOpen, isRequestInfoOpen, selectedCountry]
+    [isOpen, isCountrySearchOpen, isRequestInfoOpen, selectedCountry, theme]
   );
 
   useEffect(() => {
@@ -154,6 +162,21 @@ export default function CommandMenu({ requestInfo }) {
       onClick: () => {
         setIsOpen(false);
         rotateNavPosition();
+      },
+    },
+    {
+      name: `Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`,
+      desc: "You can change the theme of the application",
+      icon:
+        theme === "dark" ? (
+          <SunIcon className="size-5" />
+        ) : (
+          <MoonIcon className="size-5" />
+        ),
+      shortct: ["⌘", "⇧", "L"],
+      onClick: () => {
+        setIsOpen(false);
+        setTheme(theme === "dark" ? "light" : "dark");
       },
     },
   ];
