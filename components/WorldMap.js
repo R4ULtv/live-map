@@ -116,10 +116,10 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
 
   return (
     <div className="relative w-screen h-screen">
-      {hoverCountry !== null && (
+      <Transition show={!!hoverCountry}>
         <div
           className={
-            "absolute left-1/2 -translate-x-1/2 " +
+            "absolute left-1/2 -translate-x-1/2 transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-50 " +
             (navPosition === "top" ? "bottom-3" : "top-3")
           }
         >
@@ -136,7 +136,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
             </div>
           </div>
         </div>
-      )}
+      </Transition>
       {hoverPing !== null && (
         <div
           className={
