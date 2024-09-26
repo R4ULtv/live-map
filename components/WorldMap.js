@@ -16,8 +16,10 @@ import { useGraphicsQuality } from "@/components/providers/GraphicsQualityContex
 import { useCommandMenu } from "@/components/providers/CommandMenuContext";
 import { FPSCounter } from "@/components/ui/FPSCounter";
 import { Transition } from "@headlessui/react";
+import { useTheme } from "next-themes";
 
 export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
+  const { theme } = useTheme();
   const [hoverCountry, setHoverCountry] = useState(null);
   const [hoverPing, setHoverPing] = useState(null);
   const [locations, setLocations] = useState([]);
@@ -77,8 +79,13 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
   }, []);
 
   const colorScale = useMemo(
-    () => scaleLinear().domain([min, max]).range(["#a1a1aa", "#fafafa"]),
-    [min, max]
+    () =>
+      scaleLinear()
+        .domain([min, max])
+        .range(
+          theme === "dark" ? ["#a1a1aa", "#fafafa"] : ["#52525b", "#09090b"]
+        ),
+    [min, max, theme]
   );
 
   const getColor = useCallback(
@@ -99,7 +106,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
           onClick={() =>
             geo.properties.Alpha2 && setSelectedCountry(geo.properties.Alpha2)
           }
-          className="outline-none select-none stroke-0.5 stroke-zinc-800 hover:fill-emerald-500 hover:cursor-pointer"
+          className="outline-none select-none stroke-0.5 stroke-zinc-200 dark:stroke-zinc-800 hover:fill-emerald-500 hover:cursor-pointer"
           tabIndex={-1}
           onMouseEnter={() => setHoverCountry(geo.properties.Alpha2 || null)}
           onMouseLeave={() => setHoverCountry(null)}
@@ -116,14 +123,14 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
             (navPosition === "top" ? "bottom-3" : "top-3")
           }
         >
-          <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center gap-1 p-1">
+          <div className="rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow flex items-center gap-1 p-1">
             <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1.5">
               <img
                 className="w-5 h-auto rounded-sm"
                 src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${hoverCountry}.svg`}
                 loading="lazy"
               />
-              <span className="text-zinc-200 text-sm">
+              <span className="text-sm font-medium">
                 {getCountryData(hoverCountry)?.name}
               </span>
             </div>
@@ -131,9 +138,14 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
         </div>
       )}
       {hoverPing !== null && (
-        <div className="absolute top-5 left-0 right-0 flex items-center justify-center z-50">
-          <div className="rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 shadow flex items-center p-1">
-            <div className="py-1 px-2 rounded-full outline-none flex items-center gap-1">
+        <div
+          className={
+            "absolute left-1/2 -translate-x-1/2 " +
+            (navPosition === "top" ? "bottom-3" : "top-3")
+          }
+        >
+          <div className="rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow flex items-center p-1">
+            <div className="py-1 px-2 rounded-full outline-none flex items-center gap-0.5">
               <MapPinIcon
                 className={
                   "size-5 " +
@@ -142,7 +154,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
                     : "text-indigo-500")
                 }
               />
-              <span className="text-zinc-200 text-sm">
+              <span className="text-sm font-medium">
                 {hoverPing.city || hoverPing.country} ({hoverPing.country})
               </span>
             </div>
@@ -185,7 +197,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
               className="transition duration-150 ease-in-out data-[closed]:opacity-0"
             >
               <path
-                className="-translate-y-5 -translate-x-2.5 fill-rose-500 stroke-0.5 stroke-zinc-900 hover:cursor-pointer"
+                className="-translate-y-5 -translate-x-2.5 fill-rose-500 stroke-0.5 stroke-zinc-200 dark:stroke-zinc-800 hover:cursor-pointer"
                 viewBox="0 0 20 20"
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -214,7 +226,7 @@ export default function WorldMap({ geoData, min, max, requestInfo, fetchURL }) {
                 onMouseLeave={() => setHoverPing(null)}
               >
                 <path
-                  className="-translate-y-5 -translate-x-2.5 fill-indigo-500 stroke-0.5 stroke-zinc-800 hover:cursor-pointer"
+                  className="-translate-y-5 -translate-x-2.5 fill-indigo-500 stroke-0.5 stroke-zinc-200 dark:stroke-zinc-800 hover:cursor-pointer"
                   viewBox="0 0 20 20"
                   fillRule="evenodd"
                   clipRule="evenodd"
