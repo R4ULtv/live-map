@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import numeral from "numeral";
 
 export default function Navigation({ fetchURL }) {
@@ -119,7 +119,7 @@ export default function Navigation({ fetchURL }) {
 
   return (
     <TooltipProvider>
-      <Transition show={navPosition}>
+      <Transition show={!!navPosition}>
         <div
           className={
             "absolute transform w-min transition duration-150 ease-in-out data-[closed]:opacity-0 data-[closed]:scale-50 " +
@@ -140,8 +140,8 @@ export default function Navigation({ fetchURL }) {
                 : "flex-row")
             }
           >
-            {nav.map((e) => (
-              <>
+            {nav.map((e, key) => (
+              <Fragment key={key}>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
@@ -167,15 +167,14 @@ export default function Navigation({ fetchURL }) {
                 </Tooltip>
                 {e.divedeAfter && (
                   <div
-                    className={
-                      "bg-zinc-300 dark:bg-zinc-700 " +
-                      (navPosition === "left" || navPosition === "right"
+                    className={`bg-zinc-300 dark:bg-zinc-700 ${
+                      navPosition === "left" || navPosition === "right"
                         ? "h-px w-5"
-                        : "w-px h-5")
-                    }
+                        : "w-px h-5"
+                    }`}
                   />
                 )}
-              </>
+              </Fragment>
             ))}
           </div>
         </div>
