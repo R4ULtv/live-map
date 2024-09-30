@@ -11,35 +11,58 @@ export function CommandMenuProvider({ children }) {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [isShowFps, setIsShowFps] = useState(false);
   const [fpsPosition, setFpsPosition] = useState(null);
-  const [isShowNav, setIsShowNav] = useState(true);
+  const [isShowNav, setIsShowNav] = useState(false);
   const [navPosition, setNavPosition] = useState(null);
 
   useEffect(() => {
-    const storedPosition = localStorage.getItem("nav-position");
-    if (storedPosition) {
-      setNavPosition(storedPosition);
+    const storedNavPosition = localStorage.getItem("nav-position");
+    const storedNavVisibility = localStorage.getItem("nav-visibility");
+    const storedFpsPosition = localStorage.getItem("fps-position");
+    const storedFpsVisibility = localStorage.getItem("fps-visibility");
+
+    if (storedNavPosition) {
+      setNavPosition(storedNavPosition);
     } else {
       localStorage.setItem("nav-position", "bottom");
       setNavPosition("bottom");
     }
-  }, []);
 
-  useEffect(() => {
-    const storedPosition = localStorage.getItem("fps-position");
-    if (storedPosition) {
-      setFpsPosition(storedPosition);
+    if (storedNavVisibility) {
+      setIsShowNav(JSON.parse(storedNavVisibility));
+    } else {
+      localStorage.setItem("nav-visibility", JSON.stringify(true));
+      setIsShowNav(true);
+    }
+
+    if (storedFpsPosition) {
+      setFpsPosition(storedFpsPosition);
     } else {
       localStorage.setItem("fps-position", "top-right");
       setFpsPosition("top-right");
     }
+
+    if (storedFpsVisibility) {
+      setIsShowFps(JSON.parse(storedFpsVisibility));
+    } else {
+      localStorage.setItem("fps-visibility", JSON.stringify(false));
+      setIsShowFps(false);
+    }
   }, []);
 
   const toggleFps = () => {
-    setIsShowFps((prev) => !prev);
+    setIsShowFps((prev) => {
+      const newValue = !prev;
+      localStorage.setItem("fps-visibility", JSON.stringify(newValue));
+      return newValue;
+    });
   };
 
   const toggleNav = () => {
-    setIsShowNav((prev) => !prev);
+    setIsShowNav((prev) => {
+      const newValue = !prev;
+      localStorage.setItem("nav-visibility", JSON.stringify(newValue));
+      return newValue;
+    });
   };
 
   const rotateNavPosition = () => {
