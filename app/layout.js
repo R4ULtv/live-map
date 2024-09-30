@@ -33,7 +33,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${GeistSans.className} bg-zinc-100 dark:bg-zinc-900 selection:bg-zinc-400/25 dark:selection:bg-zinc-600/25 relative`}
       >
-        <ThemeProvider attribute="class" enableSystem={false}>
+        <ThemeProvider
+          attribute="class"
+          enableSystem={false}
+          defaultTheme="dark"
+        >
           <CommandMenuProvider>{children}</CommandMenuProvider>
         </ThemeProvider>
       </body>
