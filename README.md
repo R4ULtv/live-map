@@ -1,6 +1,6 @@
 <img alt="Live Map - Simple World Map" src="https://www.raulcarini.dev/api/dynamic-og?title=Live%20Map&description=A%20world%20map%20with%20stats%20and%20general%20information%20for%20each%20country">
 
-The Live Map Project is an interactive web application that allows users to visualize and interact with geographical data. It provides functionalities such as searching for countries, viewing geolocation data, and toggling graphics quality for performance optimization. The application is built using React and leverages various libraries for UI components and data visualization.
+The Live Map Project is an interactive web application that allows users to visualize and interact with geographical data. It provides functionalities such as searching for countries, viewing geolocation data, and toggling graphics quality for performance optimization. The application is built using NextJs and leverages various libraries for UI components and data visualization.
 
 ## Features
 - **Country Search**: Users can search for countries by name or code and view relevant data.
